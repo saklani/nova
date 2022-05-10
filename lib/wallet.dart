@@ -16,13 +16,13 @@ class Wallet extends Account {
 
   Wallet(
     this.privateKey,
-    Web3Client client,
+    String url,
   ) : super(
           "0x${_getPublicKey(
             decodeBigIntWithSign(1, privateKey.codeUnits),
             ECCurve_secp256k1(),
           ).toRadixString(16)}",
-          client,
+          Web3Client(url),
         );
 
   Future<SignedTransaction> signTransaction(Transaction transaction) async {

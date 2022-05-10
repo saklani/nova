@@ -1,2 +1,4 @@
 library supernova;
-export 'package:supernova/core.dart';
+
+export 'core.dart';
+export 'wallet.dart';
