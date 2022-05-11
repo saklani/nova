@@ -203,7 +203,7 @@ class Wallet extends Account {
   static String _getAddress(BigInt privateKey) {
     BigInt publicKey = _getPublicKey(privateKey, ECCurve_secp256k1());
     final keccak = KeccakDigest(256);
-    return '0x${hex.encode(keccak.process(encodeBigInt(publicKey))).substring(12)}';
+    return '0x${hex.encode(keccak.process(encodeBigInt(publicKey))).substring(24)}';
   }
 
   String generateMnemonic() => throw UnimplementedError();
