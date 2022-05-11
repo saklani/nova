@@ -78,8 +78,7 @@ class Wallet extends Account {
       r: signature.r,
       s: signature.s,
       rawTransaction: '0x${hex.encode(rawTransaction)}',
-      transactionHash:
-          '0x${hex.encode(KeccakDigest(256).process(rawTransaction))}',
+      transactionHash: '0x${hex.encode(keccak(rawTransaction))}',
     );
   }
 
@@ -156,8 +155,7 @@ class Wallet extends Account {
       0,
       0
     ].map((e) => BigInt.parse(e.toString())).toList();
-    final keccak = KeccakDigest(256);
-    return keccak.process(Uint8List.fromList(Rlp.encode(data)));
+    return keccak(Rlp.encode(data));
   }
 
   /// https://github.com/web3j/web3j/blob/c0b7b9c2769a466215d416696021aa75127c2ff1/crypto/src/main/java/org/web3j/crypto/Sign.java#L129
@@ -214,7 +212,6 @@ class Wallet extends Account {
     value ??= BigInt.zero;
     input ??= '';
     chainId ??= await client.chainId();
-
     Transaction transaction = Transaction(
       nonce: nonce.toInt(),
       gasPrice: gasPrice,
@@ -229,8 +226,7 @@ class Wallet extends Account {
 
   static String _getAddress(BigInt privateKey) {
     BigInt publicKey = _getPublicKey(privateKey, ECCurve_secp256k1());
-    final keccak = KeccakDigest(256);
-    return '0x${hex.encode(keccak.process(encodeBigInt(publicKey))).substring(24)}';
+    return '0x${hex.encode(keccak(encodeBigInt(publicKey))).substring(24)}';
   }
 
   String generateMnemonic() => throw UnimplementedError();
