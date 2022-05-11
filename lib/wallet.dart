@@ -11,17 +11,13 @@ import 'utils.dart';
 class Wallet extends Account {
   /// 1. Sign a transaction using the private key
   /// 2. Sign and send a transaction using the private key
-
   final String privateKey;
 
   Wallet(
     this.privateKey,
     String url,
   ) : super(
-          "0x${_getPublicKey(
-            decodeBigIntWithSign(1, privateKey.codeUnits),
-            ECCurve_secp256k1(),
-          ).toRadixString(16)}",
+          _getAddress(decodeBigIntWithSign(1, privateKey.codeUnits)),
           Web3Client(url),
         );
 
@@ -135,8 +131,6 @@ class Wallet extends Account {
     }
   }
 
-  /// Signs a Transaction and Sends it
-  /// Returns a Transaction Hash
   Future<void> sendTransaction(SignedTransaction signedTransaction) {
     return sendRawTransaction(signedTransaction.rawTransaction);
   }
@@ -204,6 +198,12 @@ class Wallet extends Account {
   ) {
     ECPoint point = (parameters.G * privateKey)!;
     return decodeBigIntWithSign(1, point.getEncoded(false).sublist(1));
+  }
+
+  static String _getAddress(BigInt privateKey) {
+    BigInt publicKey = _getPublicKey(privateKey, ECCurve_secp256k1());
+    final keccak = KeccakDigest(256);
+    return '0x${hex.encode(keccak.process(encodeBigInt(publicKey))).substring(12)}';
   }
 
   String generateMnemonic() => throw UnimplementedError();
