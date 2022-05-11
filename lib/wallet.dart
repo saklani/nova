@@ -200,6 +200,33 @@ class Wallet extends Account {
     return decodeBigIntWithSign(1, point.getEncoded(false).sublist(1));
   }
 
+  Future<BigInt> estimateGas({
+    BigInt? nonce,
+    BigInt? gasPrice,
+    required BigInt gasLimit,
+    required String to,
+    BigInt? value,
+    String? input,
+    int? chainId = 1,
+  }) async {
+    nonce ??= await client.getTransactionCount(address);
+    gasPrice ??= await client.gasPrice();
+    value ??= BigInt.zero;
+    input ??= '';
+    chainId ??= await client.chainId();
+
+    Transaction transaction = Transaction(
+      nonce: nonce.toInt(),
+      gasPrice: gasPrice,
+      gasLimit: gasLimit,
+      to: to,
+      value: value,
+      input: input,
+      chainId: chainId,
+    );
+    return client.estimateGas(transaction);
+  }
+
   static String _getAddress(BigInt privateKey) {
     BigInt publicKey = _getPublicKey(privateKey, ECCurve_secp256k1());
     final keccak = KeccakDigest(256);
