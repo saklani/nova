@@ -22,7 +22,6 @@ class Wallet extends Account {
         );
 
   Future<SignedTransaction> signTransaction(Transaction transaction) async {
-    _transactionSignable(transaction);
     final messageHash = _messageHash(transaction);
     final parameters = ECCurve_secp256k1();
     final ecdsa = ECDSASigner(null, HMac(SHA256Digest(), 64));
@@ -67,11 +66,11 @@ class Wallet extends Account {
     ].map((e) => BigInt.parse(e.toString())).toList());
 
     return SignedTransaction(
-      nonce: transaction.nonce!,
-      gasPrice: transaction.gasPrice!,
-      gasLimit: transaction.gasLimit!,
+      nonce: transaction.nonce,
+      gasPrice: transaction.gasPrice,
+      gasLimit: transaction.gasLimit,
       to: transaction.to,
-      value: transaction.value ?? BigInt.zero,
+      value: transaction.value,
       input: transaction.input ?? '',
       messageHash: '0x${hex.encode(messageHash)}',
       v: v,
@@ -110,26 +109,6 @@ class Wallet extends Account {
     return signTransaction(transaction);
   }
 
-  /// Throws if the transaction cannot be signed.
-  void _transactionSignable(Transaction transaction) {
-    if (transaction.nonce == null) {
-      throw Exception('nonce cannot be null');
-    } else if (transaction.nonce!.isNegative) {
-      throw Exception('nonce cannot be negative');
-    }
-    if (transaction.gasPrice == null) {
-      throw Exception('gasPrice cannot be null');
-    } else if (transaction.gasPrice!.isNegative) {
-      throw Exception('gasPrice cannot be negative');
-    }
-
-    if (transaction.gasLimit == null) {
-      throw Exception('gasLimit cannot be null');
-    } else if (transaction.gasLimit!.isNegative) {
-      throw Exception('gasLimit cannot be negative');
-    }
-  }
-
   Future<void> sendTransaction(SignedTransaction signedTransaction) {
     return sendRawTransaction(signedTransaction.rawTransaction);
   }
@@ -149,7 +128,7 @@ class Wallet extends Account {
       transaction.gasPrice,
       transaction.gasLimit,
       BigInt.parse(transaction.to),
-      transaction.value ?? 0,
+      transaction.value,
       transaction.input ?? 0,
       transaction.chainId,
       0,
