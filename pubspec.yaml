@@ -15,6 +15,7 @@ dependencies:
   pointycastle: ^3.6.0
   nova:
     git: https://github.com/saklani/nova
+  bip39: ^1.0.6
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:bip39/bip39.dart' as bip39;
 import 'package:convert/convert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:nova/nova.dart';
@@ -18,7 +19,7 @@ class Wallet extends Account {
     this.privateKey,
     String url,
   ) : super(
-          _getAddress(decodeBigIntWithSign(1, privateKey.codeUnits)),
+          _getAddress(BigInt.parse(privateKey)),
           Web3Client(url),
         );
 
@@ -208,5 +209,5 @@ class Wallet extends Account {
     return '0x${hex.encode(keccak(encodeBigInt(publicKey))).substring(24)}';
   }
 
-  String generateMnemonic() => throw UnimplementedError();
+  String generateMnemonic() => (bip39.generateMnemonic());
 }
