@@ -1,39 +1,69 @@
-<!-- 
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Supernova
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages). 
+Supernova is an Ethereum Wallet SDK in Dart.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages). 
--->
+# Getting Started
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+## Sign a Transaction
 
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder. 
+Generate signed transaction
 
 ```dart
-const like = 'sample';
+import "package:supernova/supernova.dart";
+
+void main() async {
+  final web3 = Wallet(
+    "0x4646464646464646464646464646464646464646464646464646464646464646",
+    "ws://your-json-rpc-websocket.test",
+  );
+  final signedTransaction = await web3.sign(
+    nonce: 9,
+    to: "0x3535353535353535353535353535353535353535",
+    gasLimit: BigInt.from(21000),
+    gasPrice: BigInt.from(20 * pow(10, 9)),
+    value: BigInt.from(pow(10, 18)),
+    chainId: 1,
+  );
+}
 ```
 
-## Additional information
+## Send a Transaction
 
-TODO: Tell users more about the package: where to find more information, how to 
-contribute to the package, how to file issues, what response they can expect 
-from the package authors, and more.
+Quickly sign and send a transaction.
+
+```dart
+import "package:supernova/supernova.dart";
+
+void main() async {
+  final web3 = Wallet(
+    "0x4646464646464646464646464646464646464646464646464646464646464646",
+    "ws://your-json-rpc-websocket.test",
+  );
+  final signedTransaction = await web3.send(
+    nonce: 9,
+    to: "0x3535353535353535353535353535353535353535",
+    gasLimit: BigInt.from(21000),
+    gasPrice: BigInt.from(20 * pow(10, 9)),
+    value: BigInt.from(pow(10, 18)),
+    chainId: 1,
+  );
+}
+```
+
+## Send a raw transaction
+
+Send a raw transaction if that is what you need.
+
+```dart
+import "package:supernova/supernova.dart";
+
+void main() async {
+  final web3 = Wallet(
+    "0x4646464646464646464646464646464646464646464646464646464646464646",
+    "ws://your-json-rpc-websocket.test",
+  );
+  await web3.sendRawTransaction(
+    '0xf86c098504a817c800825208943535353535353535353535353535353535353535880de0b6b3a76400008025a028ef61340bd939bc2195fe537567866003e1a15d3c71ff63e1590620aa636276a067cbe9d8997f761aecb703304b3800ccf555c9f3dc64214b297fb1966a3b6d83',
+  );
+}
+```
