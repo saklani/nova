@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:nova/nova.dart';
 import 'package:pointycastle/export.dart';
 import 'package:rlp/rlp.dart';
@@ -22,16 +23,15 @@ class Wallet extends Account {
         );
 
   Future<SignedTransaction> signTransaction(Transaction transaction) async {
-    final messageHash = _messageHash(transaction);
+    final hash = encode(transaction);
     final parameters = ECCurve_secp256k1();
     final ecdsa = ECDSASigner(null, HMac(SHA256Digest(), 64));
     final key = ECPrivateKey(
       BigInt.parse(privateKey),
       parameters,
     );
-
     ecdsa.init(true, PrivateKeyParameter(key));
-    final signature = ecdsa.generateSignature(messageHash) as ECSignature;
+    final signature = ecdsa.generateSignature(hash) as ECSignature;
 
     // Public key to sign the transaction.
     BigInt publicKey = _getPublicKey(BigInt.parse(privateKey), parameters);
@@ -43,11 +43,11 @@ class Wallet extends Account {
         i,
         signature.r,
         signature.s,
-        messageHash,
+        hash,
         parameters,
       );
       if (k != null && k == publicKey) {
-        v = i;
+        v = i + 2 * transaction.chainId + 35;
         break;
       }
     }
@@ -58,8 +58,7 @@ class Wallet extends Account {
       transaction.gasLimit,
       transaction.to,
       transaction.value,
-      transaction.input,
-      transaction.chainId,
+      transaction.input.isEmpty ? 0 : transaction.input,
       v,
       signature.r,
       signature.s,
@@ -71,8 +70,8 @@ class Wallet extends Account {
       gasLimit: transaction.gasLimit,
       to: transaction.to,
       value: transaction.value,
-      input: transaction.input ?? '',
-      messageHash: '0x${hex.encode(messageHash)}',
+      input: transaction.input,
+      messageHash: '0x${hex.encode(hash)}',
       v: v,
       r: signature.r,
       s: signature.s,
@@ -83,7 +82,7 @@ class Wallet extends Account {
 
   /// Accepts a transaction and returns a signed transaction.
   Future<SignedTransaction> sign({
-    BigInt? nonce,
+    int? nonce,
     BigInt? gasPrice,
     required BigInt gasLimit,
     required String to,
@@ -91,22 +90,22 @@ class Wallet extends Account {
     String? input,
     int? chainId,
   }) async {
-    nonce ??= await client.getTransactionCount(address);
+    nonce ??= (await client.getTransactionCount(address)).toInt();
     gasPrice ??= await client.gasPrice();
     value ??= BigInt.zero;
     input ??= '';
     chainId ??= await client.chainId();
-
-    Transaction transaction = Transaction(
-      nonce: nonce.toInt(),
-      gasPrice: gasPrice,
-      gasLimit: gasLimit,
-      to: to,
-      value: value,
-      input: input,
-      chainId: chainId,
+    return signTransaction(
+      Transaction(
+        nonce: nonce,
+        gasPrice: gasPrice,
+        gasLimit: gasLimit,
+        to: to,
+        value: value,
+        input: input,
+        chainId: chainId,
+      ),
     );
-    return signTransaction(transaction);
   }
 
   Future<void> sendTransaction(SignedTransaction signedTransaction) {
@@ -116,20 +115,21 @@ class Wallet extends Account {
   /// Sends a Raw Signed Transaction and returns a Transaction Hash
   Future<void> sendRawTransaction(String data) async {
     final response = await client.sendRawTransaction(data);
-    print(response);
+    debugPrint(response);
   }
 
   /// Takes a message and does the following
   /// 1. RLP Encodes the message
   /// 2. Applies a Keccak256 hash to it
-  Uint8List _messageHash(Transaction transaction) {
+  @visibleForTesting
+  Uint8List encode(Transaction transaction) {
     List<dynamic> data = [
       transaction.nonce,
       transaction.gasPrice,
       transaction.gasLimit,
-      BigInt.parse(transaction.to),
+      transaction.to,
       transaction.value,
-      transaction.input ?? 0,
+      transaction.input.isEmpty ? 0 : transaction.input,
       transaction.chainId,
       0,
       0
@@ -142,7 +142,7 @@ class Wallet extends Account {
     int recoveryId,
     BigInt r,
     BigInt s,
-    Uint8List messageHash,
+    Uint8List hash,
     ECDomainParameters parameters,
   ) {
     BigInt n = parameters.n;
@@ -158,7 +158,7 @@ class Wallet extends Account {
     ECPoint R = parameters.curve.decompressPoint(recoveryId % 1, x);
     if (!(R * n)!.isInfinity) return null;
 
-    BigInt e = decodeBigIntWithSign(1, messageHash);
+    BigInt e = decodeBigIntWithSign(1, hash);
     BigInt eI = (BigInt.zero - e) % n;
     BigInt rI = r.modInverse(n);
     BigInt srI = (rI * s) % n;

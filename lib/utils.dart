@@ -1,13 +1,11 @@
 import 'dart:typed_data';
 
 import 'package:pointycastle/digests/keccak.dart';
-import 'package:convert/convert.dart';
 
 /// apply keccak256 to a List<int>.
 Uint8List keccak(List<int> data) {
   return KeccakDigest(256).process(Uint8List.fromList(data));
 }
-
 
 BigInt decodeBigIntWithSign(int sign, List<int> magnitude) {
   if (sign == 0) {
