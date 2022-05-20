@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:bip39/bip39.dart' as bip39;
 import 'package:convert/convert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:nova/nova.dart';
@@ -8,6 +7,8 @@ import 'package:pointycastle/export.dart';
 import 'package:rlp/rlp.dart';
 
 import 'core.dart';
+import 'extension.dart';
+import 'generate.dart';
 import 'utils.dart';
 
 class Wallet extends Account {
@@ -15,11 +16,9 @@ class Wallet extends Account {
   /// 2. Sign and send a transaction using the private key
   final String privateKey;
 
-  Wallet(
-    this.privateKey,
-    String url,
-  ) : super(
-          _getAddress(BigInt.parse(privateKey)),
+  Wallet(this.privateKey, String url, {int chainId = 1})
+      : super(
+          generateChecksumAddress(privateKey, chainId: chainId),
           Web3Client(url),
         );
 
@@ -35,7 +34,7 @@ class Wallet extends Account {
     final signature = ecdsa.generateSignature(hash) as ECSignature;
 
     // Public key to sign the transaction.
-    BigInt publicKey = _getPublicKey(BigInt.parse(privateKey), parameters);
+    BigInt publicKey = getPublicKey(BigInt.parse(privateKey));
 
     // Recovery ID v is 0 or 1 depending on whether R or R' is used as the
     int v = -1;
@@ -159,7 +158,7 @@ class Wallet extends Account {
     ECPoint R = parameters.curve.decompressPoint(recoveryId % 1, x);
     if (!(R * n)!.isInfinity) return null;
 
-    BigInt e = decodeBigIntWithSign(1, hash);
+    BigInt e = hash.bigInt();
     BigInt eI = (BigInt.zero - e) % n;
     BigInt rI = r.modInverse(n);
     BigInt srI = (rI * s) % n;
@@ -167,15 +166,7 @@ class Wallet extends Account {
 
     final q = (parameters.G * eIrI)! + (R * srI);
 
-    return decodeBigIntWithSign(1, q!.getEncoded(false).sublist(1));
-  }
-
-  static BigInt _getPublicKey(
-    BigInt privateKey,
-    ECDomainParameters parameters,
-  ) {
-    ECPoint point = (parameters.G * privateKey)!;
-    return decodeBigIntWithSign(1, point.getEncoded(false).sublist(1));
+    return q!.getEncoded(false).sublist(1).bigInt();
   }
 
   Future<BigInt> estimateGas({
@@ -203,11 +194,4 @@ class Wallet extends Account {
     );
     return client.estimateGas(transaction);
   }
-
-  static String _getAddress(BigInt privateKey) {
-    BigInt publicKey = _getPublicKey(privateKey, ECCurve_secp256k1());
-    return '0x${hex.encode(keccak(encodeBigInt(publicKey))).substring(24)}';
-  }
-
-  String generateMnemonic() => (bip39.generateMnemonic());
 }

@@ -1,49 +1,34 @@
 import 'dart:typed_data';
 
-import 'package:pointycastle/digests/keccak.dart';
+import 'package:pointycastle/export.dart';
+
+import 'extension.dart';
 
 /// apply keccak256 to a List<int>.
 Uint8List keccak(List<int> data) {
   return KeccakDigest(256).process(Uint8List.fromList(data));
 }
 
-BigInt decodeBigIntWithSign(int sign, List<int> magnitude) {
-  if (sign == 0) {
-    return BigInt.zero;
-  }
-
-  BigInt result;
-
-  if (magnitude.length == 1) {
-    result = BigInt.from(magnitude[0]);
-  } else {
-    result = BigInt.from(0);
-    for (var i = 0; i < magnitude.length; i++) {
-      var item = magnitude[magnitude.length - i - 1];
-      result |= (BigInt.from(item) << (8 * i));
-    }
-  }
-
-  if (result != BigInt.zero) {
-    if (sign < 0) {
-      result = result.toSigned(result.bitLength);
-    } else {
-      result = result.toUnsigned(result.bitLength);
-    }
-  }
-  return result;
+BigInt getPublicKey(BigInt privateKey) {
+  ECPoint point = (ECCurve_secp256k1().G * privateKey)!;
+  return point.getEncoded(false).sublist(1).bigInt();
 }
 
-Uint8List encodeBigInt(BigInt number) {
-  var _byteMask = BigInt.from(0xff);
-  if (number == BigInt.zero) {
-    return Uint8List.fromList([0]);
+String getAddress(BigInt privateKey) {
+  BigInt publicKey = getPublicKey(privateKey);
+  return '0x' + keccak(publicKey.bytes()).hex(with0x: false).substring(24);
+}
+
+String getChecksumAddress(String address, int chainId) {
+  String sanitizedAddress = address.trim().toLowerCase().strip0x();
+  String hash = keccak((chainId.toString() + sanitizedAddress).bytes())
+      .hex(with0x: false);
+  String checksumAddress = '';
+  for (int i = 0; i < address.length; i++) {
+    // If ith character is 8 to f then make it uppercase
+    checksumAddress += (int.parse(hash[i], radix: 16) > 7)
+        ? address[i].toUpperCase()
+        : address[i];
   }
-  var size = number.bitLength + (number.isNegative ? 8 : 7) >> 3;
-  var result = Uint8List(size);
-  for (var i = 0; i < size; i++) {
-    result[size - i - 1] = (number & _byteMask).toInt();
-    number = number >> 8;
-  }
-  return result;
+  return '0x' + checksumAddress;
 }
