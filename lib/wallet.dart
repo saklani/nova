@@ -71,7 +71,6 @@ class Wallet extends Account {
       to: transaction.to,
       value: transaction.value,
       input: transaction.input,
-      chainId: transaction.chainId,
       messageHash: '0x${hex.encode(hash)}',
       v: v,
       r: signature.r,
@@ -110,7 +109,7 @@ class Wallet extends Account {
   }
 
   Future<void> sendTransaction(SignedTransaction signedTransaction) {
-    return client.sendTransaction(signedTransaction.transaction);
+    return client.sendRawTransaction(signedTransaction.rawTransaction);
   }
 
   /// Sends a Raw Signed Transaction and returns a Transaction Hash

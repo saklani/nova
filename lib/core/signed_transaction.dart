@@ -14,7 +14,6 @@ class SignedTransaction extends Equatable {
   final String messageHash;
   final String rawTransaction;
   final String transactionHash;
-  final int chainId;
 
   const SignedTransaction({
     required this.nonce,
@@ -29,7 +28,6 @@ class SignedTransaction extends Equatable {
     required this.messageHash,
     required this.rawTransaction,
     required this.transactionHash,
-    required this.chainId,
   });
 
   List<BigInt> get raw => [
@@ -64,14 +62,4 @@ class SignedTransaction extends Equatable {
         rawTransaction,
         transactionHash,
       ];
-
-  Transaction get transaction => Transaction(
-        nonce: nonce,
-        to: to,
-        gasPrice: gasPrice,
-        gasLimit: gasLimit,
-        value: value,
-        input: input,
-        chainId: chainId,
-      );
 }
