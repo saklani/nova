@@ -193,6 +193,6 @@ class Wallet extends Account {
       input: input,
       chainId: chainId,
     );
-    return client.estimateGas(transaction);
+    return await client.estimateGas(transaction) * gasPrice;
   }
 }
