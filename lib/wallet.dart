@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:nova/nova.dart';
 import 'package:pointycastle/export.dart';
 import 'package:rlp/rlp.dart';
@@ -113,15 +112,13 @@ class Wallet extends Account {
   }
 
   /// Sends a Raw Signed Transaction and returns a Transaction Hash
-  Future<void> sendRawTransaction(String data) async {
-    final response = await client.sendRawTransaction(data);
-    debugPrint(response);
+  Future<String> sendRawTransaction(String data) {
+    return client.sendRawTransaction(data);
   }
 
   /// Takes a message and does the following
   /// 1. RLP Encodes the message
   /// 2. Applies a Keccak256 hash to it
-  @visibleForTesting
   Uint8List encode(Transaction transaction) {
     List<dynamic> data = [
       transaction.nonce,

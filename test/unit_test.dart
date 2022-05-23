@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:convert/convert.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:nova/nova.dart';
 import 'package:supernova/supernova.dart';
+import 'package:test/test.dart';
 
 void main() {
   group('wallet', () {
