@@ -24,16 +24,19 @@ class Wallet extends Account {
   Future<SignedTransaction> signTransaction(Transaction transaction) async {
     final hash = encode(transaction);
     final parameters = ECCurve_secp256k1();
-    final ecdsa = ECDSASigner(null, HMac(SHA256Digest(), 64));
+    final ecdsa = NormalizedECDSASigner(
+      ECDSASigner(null, HMac(SHA256Digest(), 64)),
+      enforceNormalized: true,
+    );
     final key = ECPrivateKey(
-      BigInt.parse(privateKey),
+      privateKey.bigInt(),
       parameters,
     );
     ecdsa.init(true, PrivateKeyParameter(key));
     final signature = ecdsa.generateSignature(hash) as ECSignature;
 
     // Public key to sign the transaction.
-    BigInt publicKey = getPublicKey(BigInt.parse(privateKey));
+    BigInt publicKey = getPublicKey(privateKey.bigInt());
 
     // Recovery ID v is 0 or 1 depending on whether R or R' is used as the
     int v = -1;
@@ -160,7 +163,6 @@ class Wallet extends Account {
     BigInt rI = r.modInverse(n);
     BigInt srI = (rI * s) % n;
     BigInt eIrI = (rI * eI) % n;
-
     final q = (parameters.G * eIrI)! + (R * srI);
 
     return q!.getEncoded(false).sublist(1).bigInt();
