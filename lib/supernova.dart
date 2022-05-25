@@ -1,6 +1,6 @@
 library supernova;
 
-export 'core.dart';
+export 'client.dart';
 export 'extension.dart';
 export 'generate.dart';
 export 'utils.dart';

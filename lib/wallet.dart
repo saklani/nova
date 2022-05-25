@@ -1,11 +1,13 @@
 import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
-import 'package:nova/nova.dart';
 import 'package:pointycastle/export.dart';
 import 'package:rlp/rlp.dart';
 
-import 'core.dart';
+import 'account.dart';
+import 'client.dart';
+import 'core/signed_transaction.dart';
+import 'core/transaction.dart';
 import 'extension.dart';
 import 'generate.dart';
 import 'utils.dart';

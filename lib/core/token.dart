@@ -1,5 +1,9 @@
 import 'package:equatable/equatable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'token.g.dart';
+
+@JsonSerializable()
 class Token extends Equatable {
   final String name;
   final String symbol;

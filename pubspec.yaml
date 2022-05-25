@@ -8,13 +8,18 @@ environment:
 
 
 dependencies:
+  json_annotation: ^4.5.0
+  json_rpc_2: ^3.0.1
+  web_socket_channel: ^2.2.0
   equatable: ^2.0.3
   rlp: ^2.0.0
   pointycastle: ^3.6.0
-  nova:
-    git: https://github.com/saklani/nova
   bip39: ^1.0.6
   bip32: ^2.0.0
 
 dev_dependencies:
   test: ^1.9.0
+  async: ^2.9.0
+  build_runner: ^2.1.10
+  json_serializable: ^6.2.0
+  mockito: ^5.1.0

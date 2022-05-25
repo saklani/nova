@@ -1,6 +1,5 @@
-import 'package:nova/nova.dart';
-
-import 'token.dart';
+import 'client.dart';
+import 'core/token.dart';
 
 class Account {
   /// Public Key Address

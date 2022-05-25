@@ -1,6 +1,9 @@
 import 'package:equatable/equatable.dart';
-import 'package:nova/nova.dart';
+import 'package:json_annotation/json_annotation.dart';
 
+part 'signed_transaction.g.dart';
+
+@JsonSerializable()
 class SignedTransaction extends Equatable {
   final int nonce;
   final String to;
