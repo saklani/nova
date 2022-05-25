@@ -2,8 +2,7 @@
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
 # documentation.
-# TODO: Remove Flutter
-name: Dart
+name: Supernova
 
 on:
   push:
@@ -17,24 +16,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-18.04, windows-2019, macos-10.15]
+        os: [ ubuntu-18.04, windows-2019, macos-10.15 ]
     steps:
-      # Set up Flutter.
-      - uses: actions/checkout@v3
-      - name: Clone Flutter from Stable channel
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-      - run: flutter doctor -v
-
-      - name: Checkout Supernova code
-        uses: actions/checkout@v2
-      - run: flutter pub get -v
-      
-      # Analyze, check formatting, and run unit tests.
-      # - run: flutter analyze
-      - name: Ensure the Dart code is formatted correctly
-        run: flutter format --set-exit-if-changed --dry-run .
-      - name: Run Flutter unit tests
-        run: flutter test
+      # Set up Dart
+      - uses: actions/checkout@v2
+      - uses: dart-lang/setup-dart@v1.3
+      - name: Install dependencies
+        run: dart pub get
+      - name: Run Dart unit tests
+        run: dart test
         
