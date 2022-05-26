@@ -1,6 +1,6 @@
 # Supernova
 
-Supernova is an Ethereum Wallet SDK in Dart.
+Supernova is a Web3 library in Dart.
 
 # Getting Started
 
