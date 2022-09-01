@@ -40,8 +40,8 @@ dependencies:
   flutter_secure_storage: ^5.0.2
   qr_flutter: ^4.0.0
   share_plus: ^4.0.4
-  supernova:
-    git: https://github.com/saklani/supernova.git
+  nova:
+    git: https://github.com/saklani/nova.git
 
 
 dev_dependencies:

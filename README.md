@@ -1,6 +1,6 @@
-# Supernova
+# Nova
 
-Supernova is a Web3 library in Dart.
+Nova is a Web3 library in Dart.
 
 # Getting Started
 
@@ -9,7 +9,7 @@ Supernova is a Web3 library in Dart.
 Generate signed transaction
 
 ```dart
-import "package:supernova/supernova.dart";
+import "package:nova/nova.dart";
 
 void main() async {
   final web3 = Wallet(
@@ -32,7 +32,7 @@ void main() async {
 Quickly sign and send a transaction.
 
 ```dart
-import "package:supernova/supernova.dart";
+import "package:nova/nova.dart";
 
 void main() async {
   final web3 = Wallet(
@@ -55,7 +55,7 @@ void main() async {
 Send a raw transaction if that is what you need.
 
 ```dart
-import "package:supernova/supernova.dart";
+import "package:nova/nova.dart";
 
 void main() async {
   final web3 = Wallet(

@@ -1,4 +1,4 @@
-import 'package:supernova/supernova.dart';
+import 'package:nova/nova.dart';
 
 class Web3 {
   String _privateKey;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supernova/supernova.dart';
+import 'package:nova/nova.dart';
 import 'package:wallet/services/storage_service.dart';
 import 'package:wallet/utils/string_functions.dart';
 

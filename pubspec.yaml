@@ -1,7 +1,7 @@
-name: supernova
+name: nova
 description: Ethereum Wallet SDK in Dart.
 version: 0.0.1
-homepage: https://github.com/saklani/supernova
+homepage: https://github.com/saklani/nova.git
 
 environment:
   sdk: ">=2.16.2 <3.0.0"

@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:convert/convert.dart';
-import 'package:supernova/core/transaction.dart';
-import 'package:supernova/supernova.dart';
+import 'package:nova/core/transaction.dart';
+import 'package:nova/nova.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:supernova/supernova.dart';
+import 'package:nova/nova.dart';
 
 import 'generate.dart';
 import 'verify.dart';
