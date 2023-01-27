@@ -123,7 +123,7 @@ void main() {
       when(jsonRPC.sendRequest('eth_protocolVersion')).thenAnswer(
         (_) => Future.value("0x41"),
       );
-      final client = Web3Client.from(jsonRPC);
+      final client = Nova.from(jsonRPC);
       expect(await client.protocolVersion(), 65);
     });
 
@@ -133,7 +133,7 @@ void main() {
       when(jsonRPC.sendRequest('eth_gasPrice')).thenAnswer(
         (_) => Future.value("0x2241"),
       );
-      final client = Web3Client.from(jsonRPC);
+      final client = Nova.from(jsonRPC);
       expect(await client.gasPrice(), BigInt.from(8769));
     });
 
@@ -144,7 +144,7 @@ void main() {
       when(jsonRPC.sendRequest('eth_getBlockByHash', [hash, false])).thenAnswer(
         (_) => Future.value(jsonBlock),
       );
-      final client = Web3Client.from(jsonRPC);
+      final client = Nova.from(jsonRPC);
       expect(
         await client.getBlockByHash(hash),
         Block.fromJson(jsonBlock),
@@ -163,7 +163,7 @@ void main() {
       ).thenAnswer(
         (_) => Future.value(jsonBlock),
       );
-      final client = Web3Client.from(jsonRPC);
+      final client = Nova.from(jsonRPC);
       expect(
         await client.getBlockByNumber(number),
         Block.fromJson(jsonBlock),
@@ -176,7 +176,7 @@ void main() {
       when(jsonRPC.sendRequest('eth_chainId')).thenAnswer(
         (_) => Future.value("0x4"),
       );
-      final client = Web3Client.from(jsonRPC);
+      final client = Nova.from(jsonRPC);
       expect(await client.chainId(), 4);
     });
 
@@ -186,7 +186,7 @@ void main() {
       when(jsonRPC.sendRequest('eth_blockNumber')).thenAnswer(
         (_) => Future.value("0xde5fba"),
       );
-      final client = Web3Client.from(jsonRPC);
+      final client = Nova.from(jsonRPC);
       expect(await client.blockNumber(), BigInt.from(14573498));
     });
 
@@ -210,7 +210,7 @@ void main() {
       ).thenAnswer(
         (_) => Future.value("0x20f46dA6B50Aa37fbB50Aa37fb79aB9163B33d"),
       );
-      final client = Web3Client.from(jsonRPC);
+      final client = Nova.from(jsonRPC);
       expect(
         await client.call(transaction),
         "0x20f46dA6B50Aa37fbB50Aa37fb79aB9163B33d",
@@ -235,7 +235,7 @@ void main() {
           [transaction.to0xMap()],
         ),
       ).thenAnswer((_) => Future.value("0x20f4"));
-      final client = Web3Client.from(jsonRPC);
+      final client = Nova.from(jsonRPC);
       expect(
         await client.estimateGas(transaction),
         BigInt.from(8436),
@@ -251,7 +251,7 @@ void main() {
       when(jsonRPC.sendRequest('eth_sign', [address, message])).thenAnswer(
         (_) => Future.value("0x1"),
       );
-      final client = Web3Client.from(jsonRPC);
+      final client = Nova.from(jsonRPC);
       expect(
         await client.sign(address, message),
         "0x1",
@@ -270,7 +270,7 @@ void main() {
       ).thenAnswer(
         (_) => Future.value("0x133522"),
       );
-      final client = Web3Client.from(jsonRPC);
+      final client = Nova.from(jsonRPC);
       expect(
         await client.getBalance(address),
         BigInt.from(1258786),
@@ -285,7 +285,7 @@ void main() {
           .thenAnswer(
         (_) => Future.value("0x20f"),
       );
-      final client = Web3Client.from(jsonRPC);
+      final client = Nova.from(jsonRPC);
       expect(
         await client.getTransactionCount(address),
         BigInt.parse("0x20f"),
@@ -312,7 +312,7 @@ void main() {
           "0x20f46dA6B50Aa37fbB50Aa37fb79aB9163B33d",
         ),
       );
-      final client = Web3Client.from(jsonRPC);
+      final client = Nova.from(jsonRPC);
       expect(
         await client.sendTransaction(transaction),
         "0x20f46dA6B50Aa37fbB50Aa37fb79aB9163B33d",
@@ -328,7 +328,7 @@ void main() {
           "0x222ADd4196400f42dA6B6Dd4196400f42dA6B60Aa37f163B33dd",
         ),
       );
-      final client = Web3Client.from(jsonRPC);
+      final client = Nova.from(jsonRPC);
       expect(await client.sendRawTransaction(data),
           "0x222ADd4196400f42dA6B6Dd4196400f42dA6B60Aa37f163B33dd");
     });

@@ -1,4 +1,4 @@
-library supernova;
+library nova;
 
 export 'client.dart';
 export 'extension.dart';

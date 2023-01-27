@@ -4,7 +4,7 @@ import 'core/token.dart';
 class Account {
   /// Public Key Address
   final String address;
-  final Web3Client client;
+  final Nova client;
 
   Account(this.address, this.client);
 

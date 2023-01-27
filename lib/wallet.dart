@@ -20,7 +20,7 @@ class Wallet extends Account {
   Wallet(this.privateKey, String url, {int chainId = 1})
       : super(
           generateChecksumAddress(privateKey, chainId: chainId),
-          Web3Client(url),
+          Nova(url),
         );
 
   Future<SignedTransaction> signTransaction(Transaction transaction) async {
