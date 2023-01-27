@@ -11,17 +11,17 @@ import 'enum/block_tag.dart';
 /// clients. This library won't use the accounts feature of clients to use them
 /// to create transactions, you will instead have to obtain private keys of
 /// accounts yourself.
-class Nova {
+class NovaClient {
   /// Starts a client that connects to a JSON rpc API at [url].
 
-  Nova(String url, {bool debug = false}) {
+  NovaClient(String url, {bool debug = false}) {
     final socket = WebSocketChannel.connect(Uri.parse(url));
     _client = Client(socket.cast());
     unawaited(_client.listen());
     _debug = debug;
   }
 
-  Nova.from(Client client, {bool debug = true}) {
+  NovaClient.from(Client client, {bool debug = true}) {
     _client = client;
     unawaited(_client.listen());
     _debug = debug;

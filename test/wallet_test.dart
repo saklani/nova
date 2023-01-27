@@ -101,7 +101,7 @@ void main() {
       });
     });
   });
-
+  
   group('utils', () {
     test('generateChecksumAddress', () {
       String privateKey =

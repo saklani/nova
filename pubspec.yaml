@@ -1,11 +1,10 @@
 name: nova
-description: Ethereum Wallet SDK in Dart.
-version: 0.0.1
+description: A library to generate eth wallets, sign transaction, and send them. It also implements part of the Ethereum JSON-RPC API specification.
+version: 0.0.1+1
 homepage: https://github.com/saklani/nova.git
 
 environment:
   sdk: ">=2.16.2 <3.0.0"
-
 
 dependencies:
   json_annotation: ^4.5.0

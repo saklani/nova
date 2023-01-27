@@ -23,7 +23,7 @@ class Wallet extends Account {
     int chainId = 1,
   }) : super(
           generateChecksumAddress(privateKey, chainId: chainId),
-          Nova(url),
+          NovaClient(url),
         );
 
   Future<SignedTransaction> signTransaction(Transaction transaction) async {
