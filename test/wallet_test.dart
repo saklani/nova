@@ -8,20 +8,20 @@ import 'package:test/test.dart';
 void main() {
   group('wallet', () {
     test('wallet.encode', () {
-      final web3 = Wallet(
+      final wallet = Wallet(
         "0x4646464646464646464646464646464646464646464646464646464646464646",
-        "ws://test.test",
+        "ws://test.com",
       );
       final transaction = Transaction(
-        nonce: 9,
-        to: "0x3535353535353535353535353535353535353535",
+        nonce: BigInt.from(9),
+        to: '0x3535353535353535353535353535353535353535',
         gasLimit: BigInt.from(21000),
         gasPrice: BigInt.from(20 * pow(10, 9)),
-        value: BigInt.from(pow(10, 18)),
         chainId: 1,
         input: '',
+        value: BigInt.from(pow(10, 18)),
       );
-      final hash = web3.encode(transaction);
+      final hash = wallet.encode(transaction);
       expect(
         hex.encode(hash),
         "daf5a779ae972f972197303d7b574746c7ef83eadac0f2791ad23db92e4c8e53",
@@ -30,12 +30,12 @@ void main() {
 
     group('wallet.sign', () {
       test('Mainnet', () async {
-        final web3 = Wallet(
+        final wallet = Wallet(
           "0x4646464646464646464646464646464646464646464646464646464646464646",
-          "ws://test.test",
+          "ws://test.com",
         );
-        final signedTransaction = await web3.sign(
-          nonce: 9,
+        final signedTransaction = await wallet.sign(
+          nonce: BigInt.from(9),
           to: "0x3535353535353535353535353535353535353535",
           gasLimit: BigInt.from(21000),
           gasPrice: BigInt.from(20 * pow(10, 9)),
@@ -64,12 +64,12 @@ void main() {
         });
       });
       test('Goerli', () async {
-        final web3 = Wallet(
+        final wallet = Wallet(
           "0x4646464646464646464646464646464646464646464646464646464646464646",
-          "ws://test.test",
+          "ws://test.com",
         );
-        final signedTransaction = await web3.sign(
-          nonce: 9,
+        final signedTransaction = await wallet.sign(
+          nonce: BigInt.from(9),
           to: "0x3535353535353535353535353535353535353535",
           gasLimit: BigInt.from(21000),
           gasPrice: BigInt.from(20 * pow(10, 9)),

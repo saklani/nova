@@ -17,8 +17,11 @@ class Wallet extends Account {
   /// 2. Sign and send a transaction using the private key
   final String privateKey;
 
-  Wallet(this.privateKey, String url, {int chainId = 1})
-      : super(
+  Wallet(
+    this.privateKey,
+    String url, {
+    int chainId = 1,
+  }) : super(
           generateChecksumAddress(privateKey, chainId: chainId),
           Nova(url),
         );
@@ -86,30 +89,24 @@ class Wallet extends Account {
 
   /// Accepts a transaction and returns a signed transaction.
   Future<SignedTransaction> sign({
-    int? nonce,
+    BigInt? nonce,
     BigInt? gasPrice,
     required BigInt gasLimit,
     required String to,
     BigInt? value,
-    String? input,
-    int? chainId,
+    String input = '',
+    int chainId = 1,
   }) async {
-    nonce ??= (await client.getTransactionCount(address)).toInt();
-    gasPrice ??= await client.gasPrice();
-    value ??= BigInt.zero;
-    input ??= '';
-    chainId ??= await client.chainId();
-    return signTransaction(
-      Transaction(
-        nonce: nonce,
-        gasPrice: gasPrice,
-        gasLimit: gasLimit,
-        to: to,
-        value: value,
-        input: input,
-        chainId: chainId,
-      ),
+    Transaction transaction = await _generateTransaction(
+      nonce: nonce,
+      gasPrice: gasPrice,
+      gasLimit: gasLimit,
+      to: to,
+      value: value,
+      input: input,
+      chainId: chainId,
     );
+    return signTransaction(transaction);
   }
 
   Future<void> sendTransaction(SignedTransaction signedTransaction) {
@@ -176,16 +173,12 @@ class Wallet extends Account {
     required BigInt gasLimit,
     required String to,
     BigInt? value,
-    String? input,
-    int? chainId = 1,
+    String input = '',
+    int chainId = 1,
   }) async {
-    nonce ??= await client.getTransactionCount(address);
     gasPrice ??= await client.gasPrice();
-    value ??= BigInt.zero;
-    input ??= '';
-    chainId ??= await client.chainId();
-    Transaction transaction = Transaction(
-      nonce: nonce.toInt(),
+    Transaction transaction = await _generateTransaction(
+      nonce: nonce,
       gasPrice: gasPrice,
       gasLimit: gasLimit,
       to: to,
@@ -194,5 +187,28 @@ class Wallet extends Account {
       chainId: chainId,
     );
     return await client.estimateGas(transaction) * gasPrice;
+  }
+
+  Future<Transaction> _generateTransaction({
+    BigInt? nonce,
+    BigInt? gasPrice,
+    required BigInt gasLimit,
+    required String to,
+    BigInt? value,
+    String input = '',
+    int chainId = 1,
+  }) async {
+    nonce ??= await client.getTransactionCount(address);
+    gasPrice ??= await client.gasPrice();
+    value ??= BigInt.zero;
+    return Transaction(
+      nonce: nonce,
+      gasPrice: gasPrice,
+      gasLimit: gasLimit,
+      to: to,
+      value: value,
+      input: input,
+      chainId: chainId,
+    );
   }
 }

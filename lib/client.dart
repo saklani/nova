@@ -53,6 +53,7 @@ class Nova {
     return _makeRPCCall<String>('eth_blockNumber').then(BigInt.parse);
   }
 
+  /// Get the current balance of the account
   Future<BigInt> getBalance(
     String address, {
     BigInt? blockNumber,

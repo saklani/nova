@@ -1,20 +1,17 @@
-import 'package:equatable/equatable.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'token.freezed.dart';
 part 'token.g.dart';
 
-@JsonSerializable()
-class Token extends Equatable {
-  final String name;
-  final String symbol;
-  final int decimals;
+@freezed
+class Token with _$Token {
 
-  const Token({
-    required this.name,
-    required this.symbol,
-    required this.decimals,
-  });
+  const factory Token({
+    required String name,
+    required String symbol,
+    required int decimals,
+  }) =_Token;
 
-  @override
-  List<Object?> get props => [name, symbol, decimals];
+ factory Token.fromJson(Map<String, Object?> json)
+      => _$TokenFromJson(json);
 }

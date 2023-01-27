@@ -192,7 +192,7 @@ void main() {
 
     test('eth_call', () async {
       final transaction = Transaction(
-        nonce: 0,
+        nonce: BigInt.zero,
         to: '0x20f46dA6B50Aa37fbB50Aa37fb79aB9163B33d',
         gasLimit: BigInt.from(21000),
         gasPrice: BigInt.from(400),
@@ -220,7 +220,7 @@ void main() {
     test('eth_estimateGas', () async {
       final jsonRPC = MockClient();
       final transaction = Transaction(
-        nonce: 0,
+        nonce: BigInt.zero,
         to: '0x20f46dA6B50Aa37fbB50Aa37fb79aB9163B33d',
         gasLimit: BigInt.from(21000),
         gasPrice: BigInt.from(400),
@@ -294,7 +294,7 @@ void main() {
 
     test('eth_sendTransaction', () async {
       final transaction = Transaction(
-        nonce: 0,
+        nonce: BigInt.zero,
         to: '0x20f46dA6B50Aa37fbB50Aa37fb79aB9163B33d',
         gasLimit: BigInt.from(21000),
         gasPrice: BigInt.from(400),

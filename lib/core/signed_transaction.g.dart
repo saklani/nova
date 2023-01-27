@@ -6,9 +6,9 @@ part of 'signed_transaction.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-SignedTransaction _$SignedTransactionFromJson(Map<String, dynamic> json) =>
-    SignedTransaction(
-      nonce: json['nonce'] as int,
+_$_SignedTransaction _$$_SignedTransactionFromJson(Map<String, dynamic> json) =>
+    _$_SignedTransaction(
+      nonce: BigInt.parse(json['nonce'] as String),
       to: json['to'] as String,
       value: BigInt.parse(json['value'] as String),
       input: json['input'] as String,
@@ -22,9 +22,10 @@ SignedTransaction _$SignedTransactionFromJson(Map<String, dynamic> json) =>
       transactionHash: json['transactionHash'] as String,
     );
 
-Map<String, dynamic> _$SignedTransactionToJson(SignedTransaction instance) =>
+Map<String, dynamic> _$$_SignedTransactionToJson(
+        _$_SignedTransaction instance) =>
     <String, dynamic>{
-      'nonce': instance.nonce,
+      'nonce': instance.nonce.toString(),
       'to': instance.to,
       'value': instance.value.toString(),
       'input': instance.input,
