@@ -1,6 +1,6 @@
 import 'client.dart';
-import 'models/token.dart';
 
+/// Represents an ethereum account
 class Account {
   /// Public Key Address
   final String address;
@@ -10,7 +10,4 @@ class Account {
 
   /// Get the latest native token balance of the Account
   Future<BigInt> getBalance() => client.getBalance(address);
-
-  /// Get a list of tokens in the account
-  Future<List<Token>> getTokens() => throw UnimplementedError();
 }
