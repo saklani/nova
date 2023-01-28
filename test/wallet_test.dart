@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:convert/convert.dart';
-import 'package:nova/core/transaction.dart';
+import 'package:nova/src/models/transaction.dart';
 import 'package:nova/nova.dart';
 import 'package:test/test.dart';
 

@@ -1,7 +1,7 @@
 library nova;
 
-export 'client.dart';
-export 'extension.dart';
-export 'generate.dart';
-export 'utils.dart';
-export 'wallet.dart';
+export 'src/client.dart';
+export 'src/extension.dart';
+export 'src/generate.dart';
+export 'src/utils.dart';
+export 'src/wallet.dart';

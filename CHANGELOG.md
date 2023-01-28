@@ -7,3 +7,5 @@
 * Web3Client is now NovaClient
 * Nonce are now of type BigInt everywhere
 * Added more documentation
+
+## 0.0.1+2

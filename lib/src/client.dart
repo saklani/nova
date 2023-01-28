@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:json_rpc_2/json_rpc_2.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-import 'core/block.dart';
-import 'core/transaction.dart';
-import 'enum/block_tag.dart';
+import 'models/block.dart';
+import 'models/transaction.dart';
+import 'enums/block_tag.dart';
 
 /// Class for sending requests over an HTTP JSON-RPC API endpoint to Ethereum
 /// clients. This library won't use the accounts feature of clients to use them
@@ -44,6 +44,7 @@ class NovaClient {
     return _makeRPCCall<String>('eth_protocolVersion').then(int.parse);
   }
 
+  // Returns the current gas price in wei
   Future<BigInt> gasPrice() {
     return _makeRPCCall<String>('eth_gasPrice').then(BigInt.parse);
   }

@@ -6,8 +6,8 @@ import 'package:rlp/rlp.dart';
 
 import 'account.dart';
 import 'client.dart';
-import 'core/signed_transaction.dart';
-import 'core/transaction.dart';
+import 'models/signed_transaction.dart';
+import 'models/transaction.dart';
 import 'extension.dart';
 import 'generate.dart';
 import 'utils.dart';

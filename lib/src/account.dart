@@ -1,5 +1,5 @@
 import 'client.dart';
-import 'core/token.dart';
+import 'models/token.dart';
 
 class Account {
   /// Public Key Address

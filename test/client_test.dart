@@ -1,8 +1,8 @@
 import 'package:json_rpc_2/json_rpc_2.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:nova/core/block.dart';
-import 'package:nova/core/transaction.dart';
+import 'package:nova/src/models/block.dart';
+import 'package:nova/src/models/transaction.dart';
 import 'package:nova/nova.dart';
 import 'package:test/test.dart';
 
