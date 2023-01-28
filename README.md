@@ -1,5 +1,5 @@
 # Nova
-The `nova` is a library in Dart which can be used to generate eth wallets, sign transaction, and send them. 
+Nova can be used to generate eth wallets, sign transaction, and send them. 
 It also implements part of the Ethereum JSON-RPC API specification.
 
 ## Wallet 
