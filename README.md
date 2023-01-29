@@ -1,31 +1,31 @@
 # Nova
 Nova can be used to generate eth wallets, sign transaction, and send them. 
-It also implements part of the Ethereum JSON-RPC API specification.
+It also implements some cryptographic functions, convenient types conversion extensions, and  part of the Ethereum JSON-RPC API specification.
 
-## Wallet 
+## Account 
 The library has built-in support for managing ethereum private keys, and signatures. 
 It provides functionality for generating, signing, and sending transactions. 
 
-### Generate a wallet
-Generate a new wallet with a seed phrase
+### Generate a Account
+Generate a new account with a seed phrase
 
 ```dart
 import "package:nova/nova.dart";
 
 void main() {
   // Generate a seed phrase
-  final seedPhrase = generateMnemonic();
+  final seedPhrase = Cryptography.generateMnemonic();
 
   // Derive a private key from the seed phrase
-  final privateKey = derivePrivateKey(seedPhrase);
+  final privateKey = Cryptography.derivePrivateKey(seedPhrase);
   
-  // Instantiate a wallet object to sign and send transactions
-  final wallet = Wallet(privateKey, "ws://your-websocket.com");
+  // Instantiate an Account object to sign and send transactions
+  final account = Account(privateKey, "ws://your-websocket.com");
 }
 ```
 
 ### Use your own seed phrase or private key
-Load a wallet with a seed phrase
+Load an Account with a seed phrase
 
 ```dart
 import "package:nova/nova.dart";
@@ -35,9 +35,10 @@ void main() {
   final seedPhrase = "seed sock milk update focus rotate barely fade car face mechanic mercy"
 
   // The seed phrase private key
-  final privateKey = derivePrivateKey(seedPhrase);
-
-  final wallet = Wallet(privateKey, "ws://your-websocket.com");
+  final privateKey = Cryptography.derivePrivateKey(seedPhrase);
+  
+  // Instantiate an Account object to sign and send transactions
+  final account = Account(privateKey, "ws://your-websocket.com");
 }
 ```
 
@@ -49,12 +50,12 @@ import 'dart:math';
 import "package:nova/nova.dart";
 
 void main() async {
-  final wallet = Wallet(
+  final account = Account(
   "0x4646464646464646464646464646464646464646464646464646464646464646",
   "ws://xyz.com",
   );
 
-  final signedTransaction = await wallet.sign(
+  final signedTransaction = await account.sign(
     nonce: BigInt.from(9),
     to: "0x3535353535353535353535353535353535353535",
     gasLimit: BigInt.from(21000),
@@ -68,19 +69,19 @@ void main() async {
 
 ### Send a Transaction
 
-Quickly sign and send a transaction.
+Sign and send a transaction.
 
 ```dart
 import 'dart:math';
 import "package:nova/nova.dart";
 
 void main() async {
-   final wallet = Wallet(
+   final account = Account(
   "0x4646464646464646464646464646464646464646464646464646464646464646",
   "ws://xyz.com",
   );
 
-  final signedTransaction = await wallet.send(
+  final signedTransaction = await account.send(
     nonce: BigInt.from(9),
     to: "0x3535353535353535353535353535353535353535",
     gasLimit: BigInt.from(21000),
@@ -91,11 +92,35 @@ void main() async {
 }
 ```
 
+## Cryptography
+Convenient wrapper around [pointycastle](https://pub.dev/packages/pointycastle) to make it easier to use.
 
+### keccak
+Get the keccak256 of any bytes data
+
+```dart
+import "package:nova/nova.dart";
+
+void main() {
+  final data = "your-data";
+  Cryptography.keccak(data.bytes());
+}
+```
+
+### sign
+Sign any string data with a private key
+```dart
+import "package:nova/nova.dart";
+
+void main() {
+  final privateKey = "0x4646464646464646464646464646464646464646464646464646464646464646";
+  final data = "your-data";
+  Cryptography.sign(privateKey, data);
+}
+```
 
 ## Extensions
 Convenient dart extensions to make life easier
-
 
 ### Quickly convert between different types
 ```dart
