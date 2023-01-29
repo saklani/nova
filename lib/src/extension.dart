@@ -3,37 +3,42 @@ import 'dart:typed_data';
 import 'package:convert/convert.dart' as convert;
 
 extension StringExtension on String {
+  /// Remove 0x from the hex
   String strip0x() {
-    // Remove 0x from the hex
     return startsWith('0x') ? substring(2, length) : this;
   }
 
+  /// Is the string a valid hex
   bool validHex() {
-    // Is the string a valid hex 
     return RegExp(r'^[a-fA-F0-9]+$').hasMatch(strip0x());
   }
 
+  /// Returns the hex as BigInt
   BigInt bigInt() {
-    // Returns the hex as BigInt
     if (!validHex()) throw Exception("not a valid hex");
     return BigInt.parse("0x${strip0x()}");
   }
 
+  /// Returns the hex as Bytes
   Uint8List bytes() {
-    // Returns the hex as Bytes
     if (!validHex()) throw Exception("not a valid hex");
     return Uint8List.fromList(strip0x().codeUnits);
+  }
+
+  List<BigInt> bigBytes() {
+    if (!validHex()) throw Exception("not a valid hex");
+    return strip0x().codeUnits.map((e) => BigInt.from(e)).toList();
   }
 }
 
 extension Uint8ListExtension on Uint8List {
+  /// Return Uint8List to a hex string
   String hex({bool with0x = true}) {
-    // Return Uint8List to a hex string
     return (with0x ? '0x' : '') + convert.hex.encode(this);
   }
 
+  /// Return Uint8List the as a BigInt
   BigInt bigInt({int sign = 1}) {
-    // Return Uint8List the as a BigInt
     if (sign == 0) {
       return BigInt.zero;
     }
@@ -62,14 +67,13 @@ extension Uint8ListExtension on Uint8List {
 }
 
 extension BigIntExtension on BigInt {
-
+  /// Return BigInt as a hex String
   String hex({bool with0x = true}) {
-    // Return BigInt as a hex
     return (with0x ? '0x' : '') + toRadixString(16);
   }
 
+  /// Return BigInt as Bytes
   Uint8List bytes() {
-    // Return BigInt as Bytes
     BigInt _byteMask = BigInt.from(0xff);
     if (this == BigInt.zero) {
       return Uint8List.fromList([0]);
@@ -82,5 +86,12 @@ extension BigIntExtension on BigInt {
       number = number >> 8;
     }
     return result;
+  }
+}
+
+extension IntExtension on int {
+  /// Return Int as a hex String
+  String hex({bool with0x = true}) {
+    return (with0x ? '0x' : '') + toRadixString(16);
   }
 }

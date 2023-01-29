@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../extension.dart';
 import 'access.dart';
 
 part 'transaction.freezed.dart';
@@ -7,8 +8,7 @@ part 'transaction.g.dart';
 
 @freezed
 class Transaction with _$Transaction {
-  /// Legacy Transaction
-
+  /// Legacy
   const Transaction._();
 
   const factory Transaction({
@@ -34,12 +34,26 @@ class Transaction with _$Transaction {
       _$TransactionFromJson(json);
 
   Map<String, dynamic> to0xMap() => {
-        'nonce': '0x${this.nonce.toRadixString(16)}',
+        'nonce': this.nonce.hex(),
         'to': this.to,
-        'gasPrice': '0x${this.gasPrice.toRadixString(16)}',
-        'gasLimit': '0x${this.gasLimit.toRadixString(16)}',
-        'value': '0x${this.value.toRadixString(16)}',
+        'gasPrice': this.gasPrice.hex(),
+        'gasLimit': this.gasLimit.hex(),
+        'value': this.value.hex(),
         'input': this.input,
-        'chainId': '0x${this.chainId.toRadixString(16)}',
+        'chainId': this.chainId.hex(),
       };
+
+  List<BigInt> toList() {
+    return [
+      nonce,
+      gasPrice,
+      gasLimit,
+      to.bigInt(),
+      value,
+      input.isEmpty ? BigInt.zero : input.bigInt(),
+      BigInt.from(chainId),
+      BigInt.zero,
+      BigInt.zero,
+    ];
+  }
 }
