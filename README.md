@@ -95,7 +95,7 @@ void main() async {
 ## Cryptography
 Convenient wrapper around [pointycastle](https://pub.dev/packages/pointycastle) to make it easier to use.
 
-### keccak
+### Get the keccak256 of any data
 Get the keccak256 of any bytes data
 
 ```dart
@@ -107,7 +107,7 @@ void main() {
 }
 ```
 
-### sign
+### Sign any data
 Sign any string data with a private key
 ```dart
 import "package:nova/nova.dart";
@@ -154,7 +154,7 @@ void main() {
 
    final privateKeyB = "902MIsam)pp";
     print(privateKeyB.isValidHex());
-    // true
+    // false
 }
 ```
 
