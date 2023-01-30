@@ -9,3 +9,6 @@
 * Added more documentation
 
 ## 0.0.1+2
+* Wallet is now Account
+* Introduced Cryptography that has some common cryptography functions
+* Improved and more consistent library design
