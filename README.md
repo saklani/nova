@@ -59,8 +59,8 @@ import "package:nova/nova.dart";
 
 void main() async {
   final account = Account(
-  "0x4646464646464646464646464646464646464646464646464646464646464646",
-  "ws://xyz.com",
+    "0x4646464646464646464646464646464646464646464646464646464646464646",
+    "ws://xyz.com",
   );
 
   final signedTransaction = await account.sign(
@@ -85,8 +85,8 @@ import "package:nova/nova.dart";
 
 void main() async {
    final account = Account(
-  "0x4646464646464646464646464646464646464646464646464646464646464646",
-  "ws://xyz.com",
+    "0x4646464646464646464646464646464646464646464646464646464646464646",
+    "ws://xyz.com",
   );
 
   final signedTransaction = await account.send(
@@ -142,11 +142,11 @@ void main() {
     // [52, 54, 52, 54, 52, 54, ..., 54]
 
     final privateKeyBigInt = BigInt.from(42);
-    print(privateKey.bytes());
+    print(privateKeyBigInt.bytes());
     // [16, 146]
 
     final privateKeyBytes = Uint8List.fromList([16, 146]);
-    print(privateKey.bigInt());
+    print(privateKeyBytes.bigInt());
     // 4242
 }
 ```
