@@ -1,9 +1,9 @@
 import 'package:meta/meta.dart';
 
+import '../client/nova_client.dart';
 import '../cryptography/cryptography_impl.dart';
-import '../models/export.dart';
-import '../client.dart';
 import '../extension.dart';
+import '../models/export.dart';
 
 /// Implementation of [Account]
 @internal
@@ -16,10 +16,26 @@ class AccountImpl {
     _client = NovaClient(rpcUrl);
   }
 
+  // Pass a custom RPC client
+  AccountImpl.fromClient(NovaClient client) {
+    _client = client;
+  }
+
+  Future<BigInt> estimateGas(Transaction transaction) async {
+    return await _client.estimateGas(transaction) * transaction.gasPrice;
+  }
   Future<BigInt> getBalance(String address) => _client.getBalance(address);
+  Future<BigInt> getGasPrice() => _client.gasPrice();
+
   Future<BigInt> getNonce(String address) =>
       _client.getTransactionCount(address);
-  Future<BigInt> getGasPrice() => _client.gasPrice();
+
+  /// Sends a Raw Signed Transaction and returns a Transaction Hash
+  Future<String> sendRawTransaction(String data) =>
+      _client.sendRawTransaction(data);
+
+  Future<void> sendTransaction(SignedTransaction signedTransaction) =>
+      sendRawTransaction(signedTransaction.rawTransaction);
 
   Future<SignedTransaction> signTransaction(
     String privateKey,
@@ -76,16 +92,5 @@ class AccountImpl {
       rawTransaction: rawRlp.hex(),
       transactionHash: rawTransactionHash.hex(),
     );
-  }
-
-  Future<void> sendTransaction(SignedTransaction signedTransaction) =>
-      sendRawTransaction(signedTransaction.rawTransaction);
-
-  /// Sends a Raw Signed Transaction and returns a Transaction Hash
-  Future<String> sendRawTransaction(String data) =>
-      _client.sendRawTransaction(data);
-
-  Future<BigInt> estimateGas(Transaction transaction) async {
-    return await _client.estimateGas(transaction) * transaction.gasPrice;
   }
 }

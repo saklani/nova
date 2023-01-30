@@ -12,3 +12,4 @@
 * Wallet is now Account
 * Introduced Cryptography that has some common cryptography functions
 * Improved and more consistent library design
+* Added the ability to create a custom RPC client 

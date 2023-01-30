@@ -1,3 +1,4 @@
+import '../client/nova_client.dart';
 import '../cryptography/cryptography.dart';
 import '../models/export.dart';
 
@@ -10,12 +11,6 @@ class Account {
   /// Example: fffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd036415f
   final String privateKey;
 
-  /// ## RPC URL
-  /// The url that connects to an Ethereum Node.
-  /// **Note** - Currently must be a websocket url
-  /// Example: ws://xyz.com
-  final String rpcUrl;
-
   /// ## Chain ID
   /// The current chain ID, defaults to 1 (which is Ethereum Mainnet).
   late final String chainId;
@@ -26,12 +21,25 @@ class Account {
 
   late final AccountImpl _accountImpl;
 
-  Account(this.privateKey, this.rpcUrl, {chainId = 1}) {
+  Account({required this.privateKey, required String rpcUrl, chainId = 1}) {
     address = Cryptography.generateChecksumAddress(
       privateKey,
       chainId: chainId,
     );
     _accountImpl = AccountImpl(rpcUrl);
+  }
+
+  /// Pass a custom RPC client
+  Account.fromClient({
+    required this.privateKey,
+    required NovaClient client,
+    chainId = 1,
+  }) {
+    address = Cryptography.generateChecksumAddress(
+      privateKey,
+      chainId: chainId,
+    );
+    _accountImpl = AccountImpl.fromClient(client);
   }
 
   /// Get the balance of the Account
