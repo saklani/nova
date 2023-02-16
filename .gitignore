@@ -9,6 +9,12 @@
 .history
 .svn/
 
+# codespace
+.devcontainer
+test-project
+.npmignore
+.vscode 
+
 # IntelliJ related
 *.iml
 *.ipr
@@ -27,7 +33,6 @@
 .dart_tool/
 .packages
 build/
-
 
 pubspec.lock
 .metadata
