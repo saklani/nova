@@ -2,9 +2,10 @@
 
 <div>
   <p>
-  <a href="https://github.com/saklani/nova/actions"><img src="https://github.com/saklani/nova/actions/workflows/dart.yml/badge.svg" alt="Build Status"</a>
+  <a href="https://github.com/saklani/nova/actions"><img src="https://github.com/saklani/nova/actions/workflows/dart.yml/badge.svg" alt="Build Status"> </a>
   </p>
 </div>
+
 
 
 Nova can be used to generate eth wallets, sign transaction, and send them. 
