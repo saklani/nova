@@ -7,7 +7,6 @@ environment:
   sdk: ">=2.18.0 <3.0.0"
 
 dependencies:
-  json_annotation: ^4.8.0
   json_rpc_2: ^3.0.1
   web_socket_channel: ^2.2.0
   rlp: ^2.0.0
@@ -15,13 +14,10 @@ dependencies:
   bip39: ^1.0.6
   bip32: ^2.0.0
   convert: ^3.0.2
-  freezed_annotation: ^2.2.0
   meta: ^1.8.0
+  collection: ^1.17.1
 
 dev_dependencies:
   test: ^1.9.0
   async: ^2.9.0
   mockito: ^5.1.0
-  build_runner: ^2.3.3
-  freezed: ^2.3.2
-  json_serializable: ^6.6.0

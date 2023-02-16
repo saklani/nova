@@ -1,7 +1,8 @@
 import '../client/nova_client.dart';
 import '../cryptography/cryptography.dart';
-import '../models/export.dart';
 
+
+import '../models/transaction.dart';
 import 'account_impl.dart';
 
 /// Represents an Ethereum Externally Owned Accout (EOA)

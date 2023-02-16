@@ -1,7 +1,8 @@
 import 'dart:math';
 
-import 'package:nova/src/models/export.dart';
 import 'package:nova/src/account/account_impl.dart';
+import 'package:nova/src/models/signed_transaction.dart';
+import 'package:nova/src/models/transaction.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -14,7 +14,7 @@ class Cryptography {
   static Uint8List encode(List<BigInt> data) => CryptographyImpl.encode(data);
 
   /// ## keccak
-  /// Returns a keccak256 of bytes 
+  /// Returns a keccak256 of bytes
   static Uint8List keccak(Uint8List data) => CryptographyImpl.keccak(data);
 
   /// ## getPublicKey
@@ -31,7 +31,7 @@ class Cryptography {
   /// Derive the private key from a seed phrase
   static String derivePrivateKey(String mnemonic) =>
       CryptographyImpl.derivePrivateKey(mnemonic);
-  
+
   static String generateMnemonic() => CryptographyImpl.generateMnemonic();
 
   /// ## generateChecksumAddress

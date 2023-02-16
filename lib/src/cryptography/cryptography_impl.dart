@@ -6,8 +6,8 @@ import 'package:meta/meta.dart';
 import 'package:pointycastle/export.dart';
 import 'package:rlp/rlp.dart';
 
-import '../models/export.dart';
 import '../extension.dart';
+import '../models/signed_data.dart';
 
 @internal
 class CryptographyImpl {

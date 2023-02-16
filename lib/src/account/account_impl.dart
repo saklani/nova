@@ -1,9 +1,11 @@
+import 'dart:core';
 import 'package:meta/meta.dart';
 
 import '../client/nova_client.dart';
 import '../cryptography/cryptography_impl.dart';
 import '../extension.dart';
-import '../models/export.dart';
+import '../models/signed_transaction.dart';
+import '../models/transaction.dart';
 
 /// Implementation of [Account]
 @internal
@@ -24,6 +26,7 @@ class AccountImpl {
   Future<BigInt> estimateGas(Transaction transaction) async {
     return await _client.estimateGas(transaction) * transaction.gasPrice;
   }
+
   Future<BigInt> getBalance(String address) => _client.getBalance(address);
   Future<BigInt> getGasPrice() => _client.gasPrice();
 
