@@ -1,4 +1,4 @@
-import '../abi/abi.dart';
+import '../abi.dart';
 import 'contract_event.dart';
 import 'contract_error.dart';
 import 'contract_function.dart';

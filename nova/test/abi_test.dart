@@ -19,6 +19,22 @@ void main() {
     {"type": "bytes32", "name": ""},
     {"type": "function", "name": ""},
   ];
+
+  final dynamicTypeVariableData = [
+    {"type": "address", "name": "a"},
+    {"type": "address", "name": ""},
+    {"type": "bool", "name": "b"},
+    {"type": "bool", "name": ""},
+    {"type": "uint8", "name": ""},
+    {"type": "uint256", "name": "c"},
+    {"type": "uint8", "name": ""},
+    {"type": "uint256", "name": "d"},
+    {"type": "int8", "name": ""},
+    {"type": "int256", "name": ""},
+    {"type": "bytes0", "name": "b"},
+    {"type": "bytes32", "name": ""},
+    {"type": "function", "name": ""},
+  ];
   Map<String, Type> solTypeToDartType = {
     'address': Uint8List,
     'uint': BigInt,
@@ -53,15 +69,16 @@ void main() {
 
       test('dynamic types', () {
         for (int i = 0; i < staticTypeVariableData.length; i++) {
-          final variable = ABIImpl.decodeVariable(staticTypeVariableData[i]);
+          final variable = ABIImpl.decodeVariable(dynamicTypeVariableData[i]);
           expect(
             variable.name,
-            staticTypeVariableData[i]["name"],
+            dynamicTypeVariableData[i]["name"],
           );
           expect(
             variable.type,
             ABIImpl.decodeDartTypeFromSolType(
-                staticTypeVariableData[i]["type"]!),
+              dynamicTypeVariableData[i]["type"]!,
+            ),
           );
         }
       });

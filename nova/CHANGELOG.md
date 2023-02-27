@@ -13,3 +13,10 @@
 * Introduced Cryptography that has some common cryptography functions
 * Improved and more consistent library design
 * Added the ability to create a custom RPC client 
+
+## 0.0.1+3
+* Added abi decoder
+* Added the ability to connect to contracts
+* Removed unnecessary dependencies
+* Added more documentation
+
