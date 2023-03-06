@@ -15,23 +15,6 @@ It also implements some cryptographic functions, convenient types conversion ext
 The library has built-in support for managing ethereum private keys, and signatures. 
 It provides functionality for generating, signing, and sending transactions. 
 
-### Generate a Account
-Generate a new account with a seed phrase
-
-```dart
-import "package:nova/nova.dart";
-
-void main() {
-  // Generate a seed phrase
-  final seedPhrase = Cryptography.generateMnemonic();
-
-  // Derive a private key from the seed phrase
-  final privateKey = Cryptography.derivePrivateKey(seedPhrase);
-  
-  // Instantiate an Account object to sign and send transactions
-  final account = Account(privateKey, "ws://your-websocket.com");
-}
-```
 
 ### Use your own seed phrase or private key
 Load an Account with a seed phrase
@@ -59,12 +42,12 @@ import 'dart:math';
 import "package:nova/nova.dart";
 
 void main() async {
-  final account = Account(
+  final nova = Nova(
     "0x4646464646464646464646464646464646464646464646464646464646464646",
     "ws://xyz.com",
   );
 
-  final signedTransaction = await account.sign(
+  final signedTransaction = await nova.account.sign(
     nonce: BigInt.from(9),
     to: "0x3535353535353535353535353535353535353535",
     gasLimit: BigInt.from(21000),
@@ -85,12 +68,12 @@ import 'dart:math';
 import "package:nova/nova.dart";
 
 void main() async {
-   final account = Account(
+  final nova = Nova(
     "0x4646464646464646464646464646464646464646464646464646464646464646",
     "ws://xyz.com",
   );
 
-  final signedTransaction = await account.send(
+  final signedTransaction = await nova.account.send(
     nonce: BigInt.from(9),
     to: "0x3535353535353535353535353535353535353535",
     gasLimit: BigInt.from(21000),
@@ -101,32 +84,24 @@ void main() async {
 }
 ```
 
-## Cryptography
-Convenient wrapper around [pointycastle](https://pub.dev/packages/pointycastle) to make it easier to use.
 
-### Get the keccak256 of any data
-Get the keccak256 of any bytes data
+## Ethereum Key Management
+
+### Generate a Account
+Generate a new account with a seed phrase
 
 ```dart
 import "package:nova/nova.dart";
 
 void main() {
-  final data = "your-data";
-  Cryptography.keccak(data.bytes());
+  // Generate a seed phrase
+  final seedPhrase = keys.generateMnemonic();
+
+  // Derive a private key from the seed phrase
+  final privateKey = keys.derivePrivateKey(seedPhrase);
 }
 ```
 
-### Sign any data
-Sign any string data with a private key
-```dart
-import "package:nova/nova.dart";
-
-void main() {
-  final privateKey = "0x4646464646464646464646464646464646464646464646464646464646464646";
-  final data = "your-data";
-  Cryptography.sign(privateKey, data);
-}
-```
 
 
 ## Communicate with an Ethereum Node with Json RPC
