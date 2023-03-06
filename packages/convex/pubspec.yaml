@@ -1,0 +1,15 @@
+name: convex
+description: A collection of utility functions for web3 apps
+version: 0.0.2
+repository: https://github.com/saklani/convex
+
+environment:
+  sdk: '>=2.18.0 <3.0.0'
+
+dependencies:
+  convert: ^3.1.0
+  pointycastle: ^3.6.2
+
+dev_dependencies:
+  lints: ^2.0.0
+  test: ^1.21.0
