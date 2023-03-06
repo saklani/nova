@@ -10,7 +10,7 @@ const keys = Keys._();
 class Keys {
   const Keys._();
 
-  String generateMnemonic({int strength = 128}) {
+  List<String> generateMnemonic({int strength = 128}) {
     if (strength % 32 != 0) {
       throw ArgumentError(invalidStrength);
     }
@@ -23,7 +23,8 @@ class Keys {
         .allMatches(bits)
         .map((match) => match.group(0)!)
         .toList(growable: false);
-    String words = chunks.map((binary) => WORDLIST[int.parse(binary, radix: 2)]).join(' ');
+    List<String> words =
+        chunks.map((binary) => WORDLIST[int.parse(binary, radix: 2)]).toList();
     return words;
   }
 
