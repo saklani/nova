@@ -1,2 +1,0 @@
-
-enum Encoding { static, dynamic }
