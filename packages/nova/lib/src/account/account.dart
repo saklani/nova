@@ -1,6 +1,6 @@
 import '../client/nova_client.dart';
 
-import '../keys.dart';
+import '../keys/keys.dart';
 import '../models/transaction.dart';
 import 'account_impl.dart';
 

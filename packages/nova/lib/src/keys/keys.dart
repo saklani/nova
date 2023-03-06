@@ -2,7 +2,8 @@ import 'dart:typed_data';
 
 import 'package:convex/convex.dart';
 
-import 'constants.dart';
+import '../constants.dart';
+import 'wordlist.dart';
 
 const keys = Keys._();
 
@@ -22,8 +23,7 @@ class Keys {
         .allMatches(bits)
         .map((match) => match.group(0)!)
         .toList(growable: false);
-    List<String> wordlist = [];
-    String words = chunks.map((binary) => wordlist[binary.toInt()]).join(' ');
+    String words = chunks.map((binary) => WORDLIST[int.parse(binary, radix: 2)]).join(' ');
     return words;
   }
 
