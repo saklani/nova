@@ -11,6 +11,23 @@ on:
     branches: [ main ]
 
 jobs:
+  convex:
+    name: Unit tests on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-18.04, windows-2019, macos-10.15 ]
+    defaults:
+      run:
+        working-directory: ./packages/convex
+    steps:
+      # Set up Dart
+      - uses: actions/checkout@v2
+      - uses: dart-lang/setup-dart@v1.3
+      - name: Install dependencies
+        run: dart pub get
+      - name: Run Dart unit tests
+        run: dart test
   nova:
     name: Unit tests on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
@@ -28,4 +45,5 @@ jobs:
         run: dart pub get
       - name: Run Dart unit tests
         run: dart test
+  
         
