@@ -14,8 +14,8 @@ import "package:convex/convex.dart";
 
 void main() {
     final data = "your-data";
-    print(crypto.keccak(data.toBytes()));    
-    print(crypto.keccak(data.toBytes(), bits: 128));  
+    print(algorithm.keccak(data.toBytes()));    
+    print(algorithm.keccak(data.toBytes(), bits: 128));  
 }
 ```
 
@@ -27,7 +27,7 @@ import "package:convex/convex.dart";
 void main() {
   final privateKey = "0x4646464646464646464646464646464646464646464646464646464646464646";
   final data = "your-data";
-  crypto.sign(privateKey, data);
+  ethereum.sign(privateKey, data);
 }
 ```
 
