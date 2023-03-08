@@ -1,7 +1,7 @@
 name: convex
-description: A collection of utility functions for ethereum apps
-version: 0.0.2+1
-repository: https://github.com/saklani/convex
+description: A collection of utility functions for ethereum apps written in Dart.
+version: 0.0.2+2
+repository: https://github.com/saklani/nova
 
 environment:
   sdk: '>=2.18.0 <3.0.0'
