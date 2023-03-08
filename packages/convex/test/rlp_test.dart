@@ -3,7 +3,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:convex/convex.dart';
-import 'package:convex/src/rlp.dart';
 import 'package:test/test.dart';
 
 dynamic castTestValue(dynamic testValue) {
@@ -17,7 +16,7 @@ dynamic castTestValue(dynamic testValue) {
 
 void main() {
   test('The string dog', () {
-    final encoded = rlp.encode('dog');
+    final encoded = algorithm.rlp.encode('dog');
     expect(encoded.length, 4);
     expect(
       encoded,
@@ -26,7 +25,7 @@ void main() {
   });
 
   test('The list cat, dog', () {
-    final encoded = rlp.encode(['cat', 'dog']);
+    final encoded = algorithm.rlp.encode(['cat', 'dog']);
 
     expect(
       encoded,
@@ -40,52 +39,52 @@ void main() {
   });
 
   test('The empty string', () {
-    final encoded = rlp.encode('');
+    final encoded = algorithm.rlp.encode('');
     expect(encoded, Uint8List.fromList([0x80]));
   });
 
   test('The empty list', () {
-    final encoded = rlp.encode([]);
+    final encoded = algorithm.rlp.encode([]);
     expect(encoded, Uint8List.fromList([0xc0]));
   });
 
   test('The integer 0', () {
-    final encoded = rlp.encode(0);
+    final encoded = algorithm.rlp.encode(0);
     expect(encoded, Uint8List.fromList([0x80]));
   });
 
   test('The integer 1', () {
-    final encoded = rlp.encode(1);
+    final encoded = algorithm.rlp.encode(1);
     expect(encoded, Uint8List.fromList([0x01]));
   });
 
   test('BigInt.zero', () {
-    final encoded = rlp.encode(BigInt.zero);
+    final encoded = algorithm.rlp.encode(BigInt.zero);
     expect(encoded, Uint8List.fromList([0x80]));
   });
 
   test('BigInt.one', () {
-    final encoded = rlp.encode(BigInt.one);
+    final encoded = algorithm.rlp.encode(BigInt.one);
     expect(encoded, Uint8List.fromList([0x01]));
   });
 
   test('The encoded integer 0', () {
-    final encoded = rlp.encode('\x00');
+    final encoded = algorithm.rlp.encode('\x00');
     expect(encoded, Uint8List.fromList([0x00]));
   });
 
   test('The encoded integer 15', () {
-    final encoded = rlp.encode('\x0f');
+    final encoded = algorithm.rlp.encode('\x0f');
     expect(encoded, Uint8List.fromList([0x0f]));
   });
 
   test('The encoded integer 1024', () {
-    final encoded = rlp.encode('\x04\x00');
+    final encoded = algorithm.rlp.encode('\x04\x00');
     expect(encoded, Uint8List.fromList([0x82, 0x04, 0x00]));
   });
 
   test('The set theoretical representation of three', () {
-    final encoded = rlp.encode([
+    final encoded = algorithm.rlp.encode([
       [],
       [[]],
       [
@@ -96,16 +95,16 @@ void main() {
     expect(encoded, [0xc7, 0xc0, 0xc1, 0xc0, 0xc3, 0xc0, 0xc1, 0xc0]);
   });
 
-  // Check behaviour against the js version of rlp
+  // Check behaviour against the js version of algorithm.rlp
   test('The string a', () {
-    final encoded = rlp.encode('a');
+    final encoded = algorithm.rlp.encode('a');
     expect(String.fromCharCodes(encoded), 'a');
   });
 
   test(
       'length of string >55 should return 0xb7+len(len(data)) plus len(data) plus data',
       () {
-    final encoded = rlp.encode(
+    final encoded = algorithm.rlp.encode(
       'zoo255zoo255zzzzzzzzzzzzssssssssssssssssssssssssssssssssssssssssssssss',
     );
     expect(encoded.length, 72);
@@ -116,9 +115,9 @@ void main() {
     expect(encoded[12], 53);
   });
 
-  // Check behaviour against the js version of rlp
+  // Check behaviour against the js version of algorithm.rlp
   test('length of list 0-55 should return (0xc0+len(data)) plus data', () {
-    final encoded = rlp.encode(['dog', 'god', 'cat']);
+    final encoded = algorithm.rlp.encode(['dog', 'god', 'cat']);
     expect(encoded.length, 13);
     expect(encoded[0], 204);
     expect(encoded[1], 131);
@@ -126,9 +125,9 @@ void main() {
     expect(encoded[12], 116);
   });
 
-  // Check behaviour against the js version of rlp
-  test('should not crash on an invalid rlp', () {
-    rlp.encode(
+  // Check behaviour against the js version of algorithm.rlp
+  test('should not crash on an invalid algorithm.rlp', () {
+    algorithm.rlp.encode(
       String.fromCharCodes([
         239,
         191,
@@ -575,7 +574,7 @@ void main() {
     String expected = value['out'];
 
     test('Official test: $key', () {
-      final encoded = rlp.encode(castTestValue(testValue));
+      final encoded = algorithm.rlp.encode(castTestValue(testValue));
       final outpuut = encoded.toHex(with0x: false);
       expect(outpuut, expected);
     });

@@ -1,39 +1,55 @@
-import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:pointycastle/export.dart';
 
-import 'extensions.dart';
-import 'rlp.dart';
+import '../extensions.dart';
+import 'algorithm.dart';
 
-const crypto = Cryptography._();
+const ethereum = Ethereum._();
 
-class Cryptography {
-  const Cryptography._();
+class Ethereum {
+  const Ethereum._();
 
-  /// Encodes data into RLP.
-  /// Read more: https://ethereum.org/en/developers/docs/data-structures-and-encoding/rlp/
-  Uint8List encode(dynamic data) => rlp.encode(data);
-
-  /// Applies a keccak hash to a bytes array.
-  /// Defaults to keccak256.
-  Uint8List keccak(Uint8List data, {int bits = 256}) =>
-      KeccakDigest(bits).process(data);
-
-  /// Applies a SHA256 hash to a bytes array
-  Uint8List sha256(Uint8List data) => SHA256Digest().process(data);
-
-  /// Generates random bytes as a bytes array.
-  Uint8List randomBytes(int size) {
-    final random = Random.secure();
-    return Uint8List.fromList(List.generate(size, (_) => random.nextInt(255)));
+  Uint8List calculatePublicKey(BigInt privateKey) {
+    ECPoint point = (ECCurve_secp256k1().G * privateKey)!;
+    return point.getEncoded(false).sublist(1);
   }
 
   /// Hashes a message
   Uint8List hashMessage(String message) {
     Uint8List data = message.toBytes();
     Uint8List prefix = "\x19Ethereum Signed Message:\n${data.length}".toBytes();
-    return keccak(Uint8List.fromList(prefix + data));
+    return algorithm.keccak(Uint8List.fromList(prefix + data));
+  }
+
+  /// https://github.com/web3j/web3j/blob/c0b7b9c2769a466215d416696021aa75127c2ff1/crypto/src/main/java/org/web3j/crypto/Sign.java#L129
+  BigInt? recoverFromSignature(
+    int recoveryId,
+    BigInt r,
+    BigInt s,
+    Uint8List hash,
+  ) {
+    final parameters = ECCurve_secp256k1();
+    BigInt n = parameters.n;
+    BigInt i = BigInt.from(recoveryId ~/ 2);
+    BigInt x = r + (i * n);
+    BigInt prime = BigInt.parse(
+      '0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f',
+    );
+    if (x.compareTo(prime) >= 0) {
+      // Cannot have point co-ordinates larger than this as everything takes place modulo Q.
+      return null;
+    }
+    ECPoint R = parameters.curve.decompressPoint(recoveryId % 1, x);
+    if (!(R * n)!.isInfinity) return null;
+    BigInt e = hash.toBigInt();
+    BigInt eI = (BigInt.zero - e) % n;
+    BigInt rI = r.modInverse(n);
+    BigInt srI = (rI * s) % n;
+    BigInt eIrI = (rI * eI) % n;
+    final q = (parameters.G * eIrI)! + (R * srI);
+    final Uint8List result = q!.getEncoded(false).sublist(1);
+    return result.toBigInt();
   }
 
   /// Sign arbitary data using a private key
@@ -115,63 +131,5 @@ class Cryptography {
       'v': v.toRadixString(16),
       'signature': '0x${r.strip0x()}${s.strip0x()}${v.toRadixString(16)}'
     };
-  }
-
-  /// https://github.com/web3j/web3j/blob/c0b7b9c2769a466215d416696021aa75127c2ff1/crypto/src/main/java/org/web3j/crypto/Sign.java#L129
-  BigInt? recoverFromSignature(
-    int recoveryId,
-    BigInt r,
-    BigInt s,
-    Uint8List hash,
-  ) {
-    final parameters = ECCurve_secp256k1();
-    BigInt n = parameters.n;
-    BigInt i = BigInt.from(recoveryId ~/ 2);
-    BigInt x = r + (i * n);
-    BigInt prime = BigInt.parse(
-      '0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f',
-    );
-    if (x.compareTo(prime) >= 0) {
-      // Cannot have point co-ordinates larger than this as everything takes place modulo Q.
-      return null;
-    }
-    ECPoint R = parameters.curve.decompressPoint(recoveryId % 1, x);
-    if (!(R * n)!.isInfinity) return null;
-    BigInt e = hash.toBigInt();
-    BigInt eI = (BigInt.zero - e) % n;
-    BigInt rI = r.modInverse(n);
-    BigInt srI = (rI * s) % n;
-    BigInt eIrI = (rI * eI) % n;
-    final q = (parameters.G * eIrI)! + (R * srI);
-    final Uint8List result = q!.getEncoded(false).sublist(1);
-    return result.toBigInt();
-  }
-
-  Uint8List argon2({
-    required Uint8List data,
-    int saltSize = 32,
-    int blockLength = 128,
-    int t = 1024,
-    int desiredKeyLength = 32,
-  }) {
-    if (saltSize < 16) {
-      throw ArgumentError("Salt must have at least 16 bytes");
-    }
-    final salt = randomBytes(saltSize);
-    final derivator = Argon2BytesGenerator();
-    derivator.init(
-      Argon2Parameters(
-        Argon2Parameters.ARGON2_id,
-        salt,
-        desiredKeyLength: desiredKeyLength,
-        iterations: t,
-      ),
-    );
-    return derivator.process(data);
-  }
-
-  Uint8List calculatePublicKey(BigInt privateKey) {
-    ECPoint point = (ECCurve_secp256k1().G * privateKey)!;
-    return point.getEncoded(false).sublist(1);
   }
 }
