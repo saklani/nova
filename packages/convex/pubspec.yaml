@@ -1,6 +1,6 @@
 name: convex
 description: A collection of utility functions for ethereum apps
-version: 0.0.2
+version: 0.0.2+1
 repository: https://github.com/saklani/convex
 
 environment:

@@ -26,3 +26,8 @@
 
 ## 0.0.2
 - Added signHashedBytes function to crypto
+
+## 0.0.2+1
+- Replaced class `Cryptography` with algorithm, random, and ethereum
+- Added pbkdf2 to algorithm
+
