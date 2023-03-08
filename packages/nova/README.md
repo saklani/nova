@@ -1,7 +1,7 @@
 # Nova
 
 Nova can be used to generate eth wallets, sign transaction, and send them. 
-It also implements some cryptographic functions, convenient types conversion extensions, and  part of the Ethereum JSON-RPC API specification.
+It also implements part of the Ethereum JSON-RPC API specification.
 
 ## Account 
 The library has built-in support for managing ethereum private keys, and signatures. 
