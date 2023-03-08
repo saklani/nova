@@ -10,6 +10,8 @@ const keys = Keys._();
 class Keys {
   const Keys._();
 
+
+  /// Generates a BIP39 complatible mnemonic
   List<String> generateMnemonic({int strength = 128}) {
     if (strength % 32 != 0) {
       throw ArgumentError(invalidStrength);
@@ -29,10 +31,10 @@ class Keys {
   }
 
   String _deriveChecksumBits(Uint8List entropy) {
-    final ent = entropy.length * 8;
-    final cs = ent ~/ 32;
+    final entropyLength = entropy.length * 8;
+    final checksum = entropyLength ~/ 32;
     final hash = crypto.sha256(entropy);
-    return hash.toBinary().substring(0, cs);
+    return hash.toBinary().substring(0, checksum);
   }
 
   Uint8List mnemonicToSeed(String mnemonic) =>
