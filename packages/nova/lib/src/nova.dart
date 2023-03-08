@@ -9,7 +9,7 @@ class Nova {
 
   late final Account account;
 
-  /// Nova can be used to connect to any RPC, and sign transactions using 
+  /// Nova can be used to connect to any RPC, and sign transactions using
   /// your private key.
   Nova({required this.rpc, required this.privateKey}) {
     client = NovaClient(rpc);

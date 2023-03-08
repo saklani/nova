@@ -41,5 +41,4 @@ extension Uint8ListExtension on Uint8List {
   /// Returns a binary representation of the bytes array (as a string).
   String toBinary() =>
       map((byte) => byte.toRadixString(2).padLeft(8, '0')).join('');
-
 }

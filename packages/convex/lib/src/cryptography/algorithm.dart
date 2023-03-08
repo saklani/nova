@@ -41,10 +41,10 @@ class CryptoAlgorithm {
   Uint8List keccak(Uint8List data, {int bits = 256}) =>
       KeccakDigest(bits).process(data);
 
-  /// PBKDF2 is a simple cryptographic key derivation function, 
-  /// which is resistant to dictionary attacks and rainbow table attacks. 
-  /// It is based on iteratively deriving HMAC many times with some padding. 
-  /// 
+  /// PBKDF2 is a simple cryptographic key derivation function,
+  /// which is resistant to dictionary attacks and rainbow table attacks.
+  /// It is based on iteratively deriving HMAC many times with some padding.
+  ///
   /// Description
   /// Internet Standard RFC 2898 (PKCS #5) - https://www.ietf.org/rfc/rfc2898.txt
   Uint8List pbkdf({
