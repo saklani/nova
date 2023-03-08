@@ -44,9 +44,9 @@ class AccountImpl {
     String privateKey,
     Transaction transaction,
   ) async {
-    final data = crypto.encode(transaction.toBigInts());
-    final hashedMessage = crypto.keccak(data);
-    final signedData = await crypto.signHashedBytes(
+    final data = algorithm.rlp.encode(transaction.toBigInts());
+    final hashedMessage = algorithm.keccak(data);
+    final signedData = await ethereum.signHashedBytes(
       key: privateKey,
       hashedMessage: hashedMessage,
       chainId: transaction.chainId,
@@ -65,8 +65,8 @@ class AccountImpl {
       r,
       s,
     ];
-    final rawRlp = crypto.encode(rawData);
-    final rawTransactionHash = crypto.keccak(rawRlp);
+    final rawRlp = algorithm.rlp.encode(rawData);
+    final rawTransactionHash = algorithm.keccak(rawRlp);
     return SignedTransaction(
       nonce: transaction.nonce,
       gasPrice: transaction.gasPrice,
