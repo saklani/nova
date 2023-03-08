@@ -37,7 +37,10 @@ class Keys {
   }
 
   Uint8List mnemonicToSeed(String mnemonic, {String passphrase = ""}) =>
-      algorithm.pbkdf(data: mnemonic.toBytes(), salt: passphrase.toBytes());
+      algorithm.pbkdf(
+        data: mnemonic.toBytes(),
+        salt: "mnemonic$passphrase".toBytes(),
+      );
 
   /// Get an Address from a private key
   String getAddress(String privateKey) {
