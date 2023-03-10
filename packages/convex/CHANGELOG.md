@@ -31,3 +31,5 @@
 - Replaced class `Cryptography` with algorithm, random, and ethereum
 - Added pbkdf2 to algorithm
 
+## 0.0.2+2
+- Added isAddress to String

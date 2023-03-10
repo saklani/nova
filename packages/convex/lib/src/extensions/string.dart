@@ -60,4 +60,9 @@ extension StringExtension on String {
       return int.parse(strip0x(), radix: 16);
     }
   }
+
+  bool isAddress() {
+    final regex = RegExp(r'/^0x[a-fA-F0-9]{40}$/');
+    return regex.hasMatch(this);
+  }
 }
