@@ -1,14 +1,15 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import '../cryptography/algorithm.dart';
+
 extension StringExtension on String {
-  /// Remove 0x from the hex
-  String strip0x() => startsWith('0x') ? substring(2, length) : this;
+  bool isAddress() {
+    final regex = RegExp(r'/^0x[a-fA-F0-9]{40}$/');
+    return regex.hasMatch(this);
+  }
 
-  /// Is the string a valid hex
-  bool isValidHex() => RegExp(r'^0x[a-fA-F0-9]+$').hasMatch(this);
-
-  /// Is the string a valid binary
+  /// Is the [String] a valid binary
   bool isValidBinary() {
     for (int i = 0; i < length; i++) {
       if (this[i] != '0' && this[i] != '1') return false;
@@ -16,7 +17,13 @@ extension StringExtension on String {
     return true;
   }
 
-  /// Returns the hex as BigInt
+  /// Is the [String] a valid hexadecimal
+  bool isValidHex() => RegExp(r'^0x[a-fA-F0-9]+$').hasMatch(this);
+
+  /// Remove '0x' from a hexadecimal
+  String strip0x() => startsWith('0x') ? substring(2, length) : this;
+
+  /// Returns the hexadecimal as [BigInt]
   BigInt toBigInt() {
     if (this == '0x') {
       return BigInt.zero;
@@ -27,7 +34,7 @@ extension StringExtension on String {
     }
   }
 
-  /// Converts the String to UTF8 and returns the Hex as Bytes
+  /// Converts the [String] to UTF8 and returns the hexadecimal as a [Uint8List]
   Uint8List toBytes() => Uint8List.fromList(utf8.encode(this));
 
   String toHex() {
@@ -40,17 +47,6 @@ extension StringExtension on String {
     return result;
   }
 
-  /// Returns the original String from the Hex
-  String toUTF8() {
-    List<int> result = [];
-    String temp = strip0x();
-    for (int i = 0; i <= length - 3; i += 2) {
-      int code = "0x${temp.substring(i, i + 2)}".toInt();
-      result.add(code);
-    }
-    return utf8.decode(result);
-  }
-
   int toInt() {
     if (isEmpty) {
       return 0;
@@ -61,8 +57,17 @@ extension StringExtension on String {
     }
   }
 
-  bool isAddress() {
-    final regex = RegExp(r'/^0x[a-fA-F0-9]{40}$/');
-    return regex.hasMatch(this);
+  /// Converts the [String] to RLP returned as a [Uint8List]
+  Uint8List toRLP() => algorithm.rlp.encode(this);
+
+  /// Returns the original [String] from hexadecimal representation
+  String toUTF8() {
+    List<int> result = [];
+    String temp = strip0x();
+    for (int i = 0; i <= length - 3; i += 2) {
+      int code = "0x${temp.substring(i, i + 2)}".toInt();
+      result.add(code);
+    }
+    return utf8.decode(result);
   }
 }

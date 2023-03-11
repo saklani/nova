@@ -1,14 +1,8 @@
 import 'dart:typed_data';
 
-extension BigIntExtension on BigInt {
-  /// Return [BigInt] as an even padded hex [String].
-  String toHex({bool with0x = true}) {
-    String result = toRadixString(16);
-    int newLength = result.length + (result.length % 2 == 0 ? 0 : 1);
-    result = result.padLeft(newLength, '0');
-    return (with0x ? '0x' : '') + result;
-  }
+import '../cryptography/algorithm.dart';
 
+extension BigIntExtension on BigInt {
   /// Return [BigInt] as bytes (as a [Uint8List]).
   Uint8List toBytes() {
     if (this == BigInt.zero) {
@@ -24,4 +18,15 @@ extension BigIntExtension on BigInt {
     }
     return result;
   }
+
+  /// Return [BigInt] as an even padded hex [String].
+  String toHex({bool with0x = true}) {
+    String result = toRadixString(16);
+    int newLength = result.length + (result.length % 2 == 0 ? 0 : 1);
+    result = result.padLeft(newLength, '0');
+    return (with0x ? '0x' : '') + result;
+  }
+
+  /// Converts the BigInt to RLP returned as Bytes
+  Uint8List toRLP() => algorithm.rlp.encode(this);
 }

@@ -3,13 +3,9 @@ import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
 
+import '../cryptography/algorithm.dart';
+
 extension Uint8ListExtension on Uint8List {
-  /// Return [Uint8List] to a hex [String]
-  String toHex({bool with0x = true}) => (with0x ? '0x' : '') + hex.encode(this);
-
-  /// Return [Uint8List] to a UTF8 [String]
-  String toUTF8({bool with0x = true}) => utf8.decode(this);
-
   /// Return [Uint8List] the as a [BigInt]
   BigInt toBigInt({int sign = 1}) {
     if (sign == 0) {
@@ -41,4 +37,13 @@ extension Uint8ListExtension on Uint8List {
   /// Returns a binary representation of the bytes array (as a string).
   String toBinary() =>
       map((byte) => byte.toRadixString(2).padLeft(8, '0')).join('');
+
+  /// Return [Uint8List] to a hex [String]
+  String toHex({bool with0x = true}) => (with0x ? '0x' : '') + hex.encode(this);
+
+  /// Converts the [Uint8List] bytes array to RLP
+  Uint8List toRLP() => algorithm.rlp.encode(this);
+
+   /// Return [Uint8List] to a UTF8 [String]
+  String toUTF8({bool with0x = true}) => utf8.decode(this);
 }
