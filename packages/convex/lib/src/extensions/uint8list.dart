@@ -6,7 +6,7 @@ import 'package:convert/convert.dart';
 import '../cryptography/algorithm.dart';
 
 extension Uint8ListExtension on Uint8List {
-  /// Return [Uint8List] the as a [BigInt]
+  /// Return the [Uint8List] bytes array as a [BigInt]
   BigInt toBigInt({int sign = 1}) {
     if (sign == 0) {
       return BigInt.zero;
@@ -34,7 +34,7 @@ extension Uint8ListExtension on Uint8List {
     return result;
   }
 
-  /// Returns a binary representation of the bytes array (as a string).
+  /// Returns a binary representation of the bytes array (as a [String]).
   String toBinary() =>
       map((byte) => byte.toRadixString(2).padLeft(8, '0')).join('');
 

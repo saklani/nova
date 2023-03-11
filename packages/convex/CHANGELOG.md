@@ -33,3 +33,4 @@
 
 ## 0.0.2+2
 - Added isAddress to String
+- Added toRLP to all dataypes

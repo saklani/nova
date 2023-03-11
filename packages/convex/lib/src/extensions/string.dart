@@ -60,7 +60,7 @@ extension StringExtension on String {
   /// Converts the [String] to RLP returned as a [Uint8List]
   Uint8List toRLP() => algorithm.rlp.encode(this);
 
-  /// Returns the original [String] from hexadecimal representation
+  /// Returns the original [String] from the hexadecimal representation
   String toUTF8() {
     List<int> result = [];
     String temp = strip0x();
