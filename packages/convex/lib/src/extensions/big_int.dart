@@ -1,9 +1,8 @@
 import 'dart:typed_data';
 
-import '../cryptography/algorithm.dart';
+import '../cryptography/rlp.dart';
 
 extension BigIntExtension on BigInt {
-
   /// Return [BigInt] as a [Uint8List]
   Uint8List toBytes() {
     if (this == BigInt.zero) {
@@ -29,5 +28,5 @@ extension BigIntExtension on BigInt {
   }
 
   /// Converts the [BigInt] to RLP
-  Uint8List toRLP() => algorithm.rlp.encode(this);
+  Uint8List toRLP() => rlp.encode(this);
 }

@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:convert/convert.dart';
 
-import '../cryptography/algorithm.dart';
+import '../cryptography/rlp.dart';
 
 extension Uint8ListExtension on Uint8List {
   /// Return the [Uint8List] bytes array as a [BigInt]
@@ -42,7 +42,7 @@ extension Uint8ListExtension on Uint8List {
   String toHex({bool with0x = true}) => (with0x ? '0x' : '') + hex.encode(this);
 
   /// Converts the [Uint8List] bytes array to RLP
-  Uint8List toRLP() => algorithm.rlp.encode(this);
+  Uint8List toRLP() => rlp.encode(this);
 
    /// Return [Uint8List] to a UTF8 [String]
   String toUTF8({bool with0x = true}) => utf8.decode(this);

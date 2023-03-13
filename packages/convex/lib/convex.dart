@@ -1,4 +1,5 @@
-export 'src/cryptography/algorithm.dart' show algorithm;
-export 'src/cryptography/ethereum.dart' show ethereum;
-export 'src/cryptography/random.dart' show random;
+export 'src/cryptography/algorithm.dart';
+export 'src/cryptography/ethereum.dart';
+export 'src/cryptography/random.dart';
+export 'src/cryptography/rlp.dart';
 export 'src/extensions.dart';

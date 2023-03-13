@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import '../cryptography/algorithm.dart';
+import '../cryptography/rlp.dart';
 
 extension StringExtension on String {
   bool isAddress() {
@@ -58,7 +58,7 @@ extension StringExtension on String {
   }
 
   /// Converts the [String] to RLP returned as a [Uint8List]
-  Uint8List toRLP() => algorithm.rlp.encode(this);
+  Uint8List toRLP() => rlp.encode(this);
 
   /// Returns the original [String] from the hexadecimal representation
   String toUTF8() {

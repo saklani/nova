@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import '../extensions.dart';
 
 /// The canonical instance of [RLP].
-const rlp_ = RLP._();
+const rlp = RLP._();
 
 /// RLP Recursive Length Prefix
 /// Read more: https://ethereum.org/en/developers/docs/data-structures-and-encoding/rlp/
